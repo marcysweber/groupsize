@@ -826,6 +826,44 @@ multiplot(a, b, c, d, e, f, cols = 2)
 
 #########
 
+#intake
+##############
+intakeMEEdata <- analysisGSscatter[analysisGSscatter$metric == "foraging-efficiency-time_mean",]
+intakeMEEdata$number <- 1:15
+intakeMEEdata$readable.params <- c("abundance", 
+                                   "clump size", 
+                                   "energy per capita", 
+                                   "extraction rate (mean)", 
+                                   "extraction rate (SD)", 
+                                   "movement speed", 
+                                   "movement noise",
+                                   "sensory range, other primates",
+                                   "patch regrowth interval",
+                                   "mean patch quality",
+                                   "SD patch quality",
+                                   "% regrowth",
+                                   "sensory range, resources",
+                                   "target distance", 
+                                   "target neighbors") 
+
+ggplot(intakeMEEdata, aes(x = mustar, y = sigma, label = parameter)) +
+  geom_point() + geom_text_repel(aes(label=ifelse(mustar>0.4, as.character(readable.params),number)), size = 5) +
+  labs(title = "Sensitivity analysis, energy intake") +
+  xlab(paste("\u03BC", "*"))+
+  ylab("\u03C3 ") +
+  scale_x_continuous(expand = c(0.1,0.1))+
+  theme(
+    axis.title = element_text(size = 20, color = "black"),
+    axis.text = element_text(size = 14, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+
+################
+
 #pop-level group size and foraging eff factorial exp results (heatmaps)
 ##############
 setwd("C:/Users/Marcy/Desktop/group size heatmap analysis")
@@ -1546,6 +1584,79 @@ multiplot(a, b, c, d, cols = 4)
 
 
 
+
+#fig 4 with energy intake 
+
+a <- ggplot(p1.2data, aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "A. all clump sizes") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+b <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "B. clump size = 1") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+c <- ggplot(rbind(bigexp_medsmallclump), aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "c. clump size = 126") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+d <- ggplot(bigexp_bigbigclump, aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "d. clump size = 501") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+
+multiplot(a, b, c, d, cols = 4)
 
 
 
