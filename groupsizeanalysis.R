@@ -446,6 +446,19 @@ multiplot(a, b, cols = 2)
 
 
 
+ggplot(resultsGS, aes(`percent-grouped`)) +
+  geom_histogram(binwidth = 0.1, aes(y=..count../sum(..count..)), fill="grey25", col="white")+
+  xlab("percent of popoulation belonging to a group")+
+  ylab("proportion of all simulations") +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
 
 
 
@@ -1098,7 +1111,7 @@ multiplot(a, c, b, d, cols = 2)
 
 #NEW Figure 3 b, c, d
 setwd("C:/Users/Marcy/Desktop/group size heatmap analysis/extra reps")
-earlymarfiles <- list.files(path = "/Users/Marcy/Desktop/group size heatmap analysis/extra reps", pattern = "*.csv")
+earlymarfiles <- list.files(path = "/Users/Marcy/Desktop/Marcy dissertatin stuff/group size heatmap analysis/extra reps", pattern = "*.csv")
 GSheatmapdata <- lapply(earlymarfiles, read.delim, skip = 6, header = TRUE, sep = ",")
 
 newclumpabun <- GSheatmapdata[[1]]
@@ -1342,7 +1355,7 @@ ggplot(p1.3dataattempt1, aes(x=group.size, y=foraging.efficiency.dist, color = c
 
 #foraging efficiency ~ group size p1.2 and 0p1.3 analysis second attempt
 ##############
-setwd("C:/Users/Marcy/Desktop/groupsizep1-2")
+setwd("C:/Users/Marcy/Desktop/Marcy dissertatin stuff/groupsizep1-2")
 p1.2data <- read.delim("basemodelprimatesocialgroups group size p1-2 p1-3 2nd attempt-table.csv", skip = 6, header = TRUE, sep = ",")
 p1.2data63 <- read.delim("basemodelprimatesocialgroups group size p1-2 clump 63-table.csv", skip = 6, header = TRUE, sep = ",")
 p1.2data63$slopes <- rep(0, 625)
@@ -1389,8 +1402,25 @@ newsmallclump_lm <- lm(foraging.efficiency.dist~log(mean.group.size), data = new
 
 
 # export at 1200 x 260 pixels
+a0 <- ggplot(p1.2data, aes(x=mean.group.size, y=foraging.efficiency.dist)) +
+  labs(title = "A. all clump sizes") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
+  ylab("foraging efficiency") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 14, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
 a <- ggplot(bigexp_smallclump, aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-  labs(title = "A. clump size = 1") + 
+  labs(title = "B. clump size = 1") + 
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
   ylab("foraging efficiency") +
@@ -1407,7 +1437,7 @@ a <- ggplot(bigexp_smallclump, aes(x=mean.group.size, y=foraging.efficiency.dist
   stat_regline_equation(label.y = 14, label.x = 1.2, aes(label = after_stat(eq.label))) 
 
 aa <- ggplot(p1.2data[p1.2data$clump.size==63,], aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-  labs(title = "B. clump size = 63") +
+  labs(title = "C. clump size = 63") +
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
   ylab("foraging efficiency") +
@@ -1424,7 +1454,7 @@ aa <- ggplot(p1.2data[p1.2data$clump.size==63,], aes(x=mean.group.size, y=foragi
   stat_regline_equation(label.y = 14, label.x = 1.2, aes(label = after_stat(eq.label))) 
 
 b <- ggplot(bigexp_medsmallclump, aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-  labs(title = "C. clump size = 126") + 
+  labs(title = "D. clump size = 126") + 
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
   ylab("foraging efficiency") +
@@ -1442,7 +1472,7 @@ b <- ggplot(bigexp_medsmallclump, aes(x=mean.group.size, y=foraging.efficiency.d
   
 
 c <- ggplot(p1.2data[p1.2data$clump.size==251,], aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-  labs(title = "D. clump size = 251") + 
+  labs(title = "E. clump size = 251") + 
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
   ylab("foraging efficiency") +
@@ -1458,26 +1488,26 @@ c <- ggplot(p1.2data[p1.2data$clump.size==251,], aes(x=mean.group.size, y=foragi
   ) +
   stat_regline_equation(label.y = 14, label.x = 1.2, aes(label = after_stat(eq.label))) 
 
-# 
-# d <- ggplot(p1.2data[p1.2data$clump.size==376,], aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-#   geom_point(size = 0.5) +
-#   labs(title = "d. clump size = 376") + 
-#   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
-#   ylab("foraging efficiency") +
-#   xlab("population mean group size")+
-#   geom_smooth(method = "lm")+
-#   theme(
-#     axis.title = element_text(size = 10, color = "black"),
-#     axis.text = element_text(size = 8, color = "black"),
-#     
-#     panel.grid = element_line(color = "black"),
-#     panel.grid.major = element_line(color = "gray75"),
-#     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
-#   )
+ 
+d <- ggplot(p1.2data[p1.2data$clump.size==376,], aes(x=mean.group.size, y=foraging.efficiency.dist)) +
+  geom_point(size = 0.5) +
+  labs(title = "F. clump size = 376") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
+  ylab("foraging efficiency") +
+  xlab("population mean group size")+
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
 
 
 e <- ggplot(p1.2data[p1.2data$clump.size==501,], aes(x=mean.group.size, y=foraging.efficiency.dist)) +
-  labs(title = "E. clump size = 501") +
+  labs(title = "G. clump size = 501") +
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ ylim(0, 15) +
   ylab("foraging efficiency") +
@@ -1495,7 +1525,7 @@ e <- ggplot(p1.2data[p1.2data$clump.size==501,], aes(x=mean.group.size, y=foragi
 
 
 
-multiplot(a, aa, b, c, e, cols = 5)
+multiplot(a0, a, aa, b, c, d, e, cols = 2)
 
 p1.2data.0.rmv <- p1.2data
 p1.2data.0.rmv[p1.2data.0.rmv$mean.group.size==0,] <- NA
@@ -1662,6 +1692,127 @@ multiplot(a, b, c, d, cols = 4)
 
 
 
+a <- ggplot(p1.2data, aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "A. all clump sizes") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+b <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "B. clump size = 1") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+c <- ggplot(p1.2data[p1.2data$clump.size==63,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "C. clump size = 63") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+d <- ggplot(rbind(bigexp_medsmallclump), aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "D. clump size = 126") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+e <- ggplot(p1.2data[p1.2data$clump.size==251,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "E. clump size = 251") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+f <- ggplot(p1.2data[p1.2data$clump.size==376,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "F. clump size = 376") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+
+
+
+g <- ggplot(bigexp_bigbigclump, aes(x=mean.group.size, y=foraging.efficiency.time)) +
+  labs(title = "G. clump size = 501") +
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ ylim(0, 5) +
+  ylab("energy intake rate") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+
+
+multiplot(a, b, c, d, e, f, g, cols = 2)
 
 
 
@@ -2166,8 +2317,8 @@ hist(p1.2data$mean.distance.traveled / 17.9)
 DDTlm <- lm(log10(mean.distance.traveled)~log10(mean.group.size), data = p1.2data.0.rmv)
 summary(DDTlm)
 
-a <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-  labs(title = "A. clump size = 1") + 
+a0 <- ggplot(p1.2data, aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
+  labs(title = "A. all clump sizes") + 
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ 
   scale_y_log10(limits=c(50, 2250)) +
@@ -2182,15 +2333,35 @@ a <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=mean.dis
     panel.grid.major = element_line(color = "gray90"),
     panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
   ) +
-  stat_regline_equation(label.y.npc = "bottom", label.x = log10(8), aes(label = after_stat(eq.label)))  
+  stat_regline_equation(label.y = log10(60), label.x = log10(8), aes(label = after_stat(eq.label)))  
+
+
+
+a <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
+  labs(title = "B. clump size = 1") + 
+  geom_point(size = 0.5, color = "gray25") +
+  scale_x_log10(limits=c(2, 150))+ 
+  scale_y_log10(limits=c(50, 2250)) +
+  ylab("daily distance traveled") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  ) +
+  stat_regline_equation(label.y = log10(75), label.x = log10(8), aes(label = after_stat(eq.label)))  
 
 
 
 
 aa <- ggplot(p1.2data[p1.2data$clump.size==63,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-  labs(title = "B. clump size = 63") + 
+  labs(title = "C. clump size = 63") + 
   geom_point(size = 0.5, color = "gray25") +
-  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(100, 2250)) +
+  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(50, 2250)) +
   ylab("daily distance traveled") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
@@ -2206,9 +2377,9 @@ aa <- ggplot(p1.2data[p1.2data$clump.size==63,], aes(x=mean.group.size, y=mean.d
 
 
 b <- ggplot(p1.2data[p1.2data$clump.size==126,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-  labs(title = "C. clump size = 126") + 
+  labs(title = "D. clump size = 126") + 
   geom_point(size = 0.5, color = "gray25") +
-  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(100, 2250)) +
+  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(50, 2250)) +
   ylab("daily distance traveled") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
@@ -2220,14 +2391,14 @@ b <- ggplot(p1.2data[p1.2data$clump.size==126,], aes(x=mean.group.size, y=mean.d
     panel.grid.major = element_line(color = "gray90"),
     panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
   ) +
-  stat_regline_equation(label.y.npc = "bottom", label.x = log10(8), aes(label = after_stat(eq.label)))  
+  stat_regline_equation(label.y = log10(75), label.x = log10(8), aes(label = after_stat(eq.label)))  
 
 
 
 c <- ggplot(p1.2data[p1.2data$clump.size==251,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-  labs(title = "D. clump size = 251") + 
+  labs(title = "E. clump size = 251") + 
   geom_point(size = 0.5, color = "gray25") +
-  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(100, 2250)) +
+  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(50, 2250)) +
   ylab("daily distance traveled") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
@@ -2239,30 +2410,32 @@ c <- ggplot(p1.2data[p1.2data$clump.size==251,], aes(x=mean.group.size, y=mean.d
     panel.grid.major = element_line(color = "gray90"),
     panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
   ) +
-  stat_regline_equation(label.y = log10(110), label.x = log10(11), aes(label = after_stat(eq.label)))  
+  stat_regline_equation(label.y = log10(75), label.x = log10(11), aes(label = after_stat(eq.label)))  
 
 
 
-# d <- ggplot(p1.2data[p1.2data$clump.size==376,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-#   geom_point(size = 0.5) +
-#   labs(title = "d. clump size = 376") + 
-#   scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(100, 2250)) +
-#   ylab("daily distance traveled") +
-#   xlab("population mean group size") +
-#   geom_smooth(method = "lm")+
-#   theme(
-#     axis.title = element_text(size = 10, color = "black"),
-#     axis.text = element_text(size = 8, color = "black"),
-#     
-#     panel.grid = element_line(color = "black"),
-#     panel.grid.major = element_line(color = "gray75"),
-#     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
-#   )
+d <- ggplot(p1.2data[p1.2data$clump.size==376,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
+  geom_point(size = 0.5) +
+  labs(title = "F. clump size = 376") +
+  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(50, 2250)) +
+  ylab("daily distance traveled") +
+  xlab("population mean group size") +
+  geom_smooth(method = "lm", color = "black", se = FALSE)+
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )+
+  stat_regline_equation(label.y = log10(75), label.x.npc = "center", aes(label = after_stat(eq.label)))  
+
 
 e <- ggplot(p1.2data[p1.2data$clump.size==501,], aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
-  labs(title = "E. clump size = 501") + 
+  labs(title = "G. clump size = 501") + 
   geom_point(size = 0.5, color = "gray25") +
-  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(100, 2250)) +
+  scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(50, 2250)) +
   ylab("daily distance traveled") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
@@ -2274,11 +2447,11 @@ e <- ggplot(p1.2data[p1.2data$clump.size==501,], aes(x=mean.group.size, y=mean.d
     panel.grid.major = element_line(color = "gray90"),
     panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
   ) +
-  stat_regline_equation(label.y = log10(2100), label.x.npc = "left", aes(label = after_stat(eq.label)))  
+  stat_regline_equation(label.y = log10(75), label.x.npc = "center", aes(label = after_stat(eq.label)))  
 
 
 #1200x260 pxls
-multiplot(a, aa, b, c, e, cols = 5)
+multiplot(a0, a, aa, b, c, d, e, cols = 2)
 
 
 
@@ -2864,6 +3037,33 @@ b<-ggplot(tgtneighbor_tgtdistv2[tgtneighbor_tgtdistv2$tgt.neighbor > 7,],
   labs(title = "b. target neighbors >= 8")
 
 multiplot(a, b, cols = 2)
+
+
+###############
+
+
+
+
+#var in group size
+##############
+
+a <- ggplot(resultsGS, aes(x = `abundance`, y = `clump-size`, fill = log(`var-group-size`))) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  labs(title = "behaviors", fill = "var group size") +
+  xlab("abundance")+
+  ylab("clump size") +  
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
 
 
 ###############
