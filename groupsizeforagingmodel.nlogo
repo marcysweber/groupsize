@@ -37,6 +37,8 @@ globals [
   total-starved
 
   scenario
+
+
 ]
 
 
@@ -1153,7 +1155,7 @@ end
 
 to make_csv_weekly_group_level_data
   (if make_csv_weekly_group_level?  [
-    let folder-path "/Users/namitamathew/Desktop/weeklygroupsizegrouplevel"
+    let folder-path "/Users/me597/Documents/"
     set-current-directory folder-path
     let file-name (word behaviorspace-experiment-name behaviorspace-run-number ".csv")
 
@@ -1178,7 +1180,7 @@ to make_csv_weekly_group_level_data
       file-close
     ]
 
-    if ticks > 3964 [
+    if ticks > 3300 [
       file-open file-name
       ask groups with [count group-member-neighbors > 1] [
         let group-size count group-member-neighbors
@@ -1603,13 +1605,13 @@ profiler:reset
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-537
-47
-2271
-1782
+588
+10
+1644
+1067
 -1
 -1
-6.14235
+3.73
 1
 10
 1
@@ -1906,7 +1908,7 @@ SWITCH
 546
 group-recog-module?
 group-recog-module?
-1
+0
 1
 -1000
 
@@ -2071,7 +2073,7 @@ SWITCH
 288
 make_csv_weekly_group_level?
 make_csv_weekly_group_level?
-1
+0
 1
 -1000
 
@@ -2417,7 +2419,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.2
+NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -3658,7 +3660,7 @@ NetLogo 6.2.2
       <value value="3"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="popdensforefftests - LAUSPHE" repetitions="2" runMetricsEveryStep="false">
+  <experiment name="popdensforefftests - LAUSPHE (1)" repetitions="2" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="4000"/>
@@ -4996,7 +4998,7 @@ NetLogo 6.2.2
   <experiment name="study2withingroup" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="8000"/>
     <metric>foraging-efficiency-time</metric>
     <metric>mean [distance-traveled] of primates</metric>
@@ -5472,10 +5474,10 @@ NetLogo 6.2.2
       <value value="3"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="jan2022ch2study2-midgreg" repetitions="1" runMetricsEveryStep="false">
+  <experiment name="jan2022ch2study2-midgreg (1)" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="8000"/>
     <metric>mean [percent-t-in-prox] of primates</metric>
     <metric>mean [foraging-efficiency-time] of primates</metric>
@@ -6505,7 +6507,7 @@ NetLogo 6.2.2
   <experiment name="group size tgtneighbor x clump" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6573,7 +6575,7 @@ NetLogo 6.2.2
   <experiment name="group size tgtneighbor x tgtdist" repetitions="3" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6641,7 +6643,7 @@ NetLogo 6.2.2
   <experiment name="group size tgtneighbor x energypercapita" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6709,7 +6711,7 @@ NetLogo 6.2.2
   <experiment name="group size tgtneighbor x clumpsize" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6777,7 +6779,7 @@ NetLogo 6.2.2
   <experiment name="group size tgtneighbor x abundance" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6912,7 +6914,7 @@ NetLogo 6.2.2
   <experiment name="group size clumpsize x energypercapita" repetitions="5" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -6980,7 +6982,7 @@ NetLogo 6.2.2
   <experiment name="group size clumpsize x abundance" repetitions="5" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7048,7 +7050,7 @@ NetLogo 6.2.2
   <experiment name="group size regrowth x speed" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7116,7 +7118,7 @@ NetLogo 6.2.2
   <experiment name="group size patch qual x speed" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7184,7 +7186,7 @@ NetLogo 6.2.2
   <experiment name="group size clump x speed" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7252,7 +7254,7 @@ NetLogo 6.2.2
   <experiment name="group size regrowth x patch qual" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7320,7 +7322,7 @@ NetLogo 6.2.2
   <experiment name="group size regrowth x clump" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7388,7 +7390,7 @@ NetLogo 6.2.2
   <experiment name="group size patch qual x clump" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7456,7 +7458,7 @@ NetLogo 6.2.2
   <experiment name="group size p1-2 p1-3" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7518,7 +7520,7 @@ NetLogo 6.2.2
   <experiment name="group size extraction rate mean x speed" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7586,7 +7588,7 @@ NetLogo 6.2.2
   <experiment name="group size extraction rate mean x clump size" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7654,7 +7656,7 @@ NetLogo 6.2.2
   <experiment name="group size extraction rate mean x energy per capita" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7722,7 +7724,7 @@ NetLogo 6.2.2
   <experiment name="group size extraction rate mean x regrowth" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7790,7 +7792,7 @@ NetLogo 6.2.2
   <experiment name="group size target distance x clump size" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7858,7 +7860,7 @@ NetLogo 6.2.2
   <experiment name="group size target distance x abundance" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
@@ -7926,7 +7928,7 @@ NetLogo 6.2.2
   <experiment name="group size target distance x extraction rate mean" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <final>make_csv_group-level_data</final>
+    <postRun>make_csv_group-level_data</postRun>
     <timeLimit steps="4300"/>
     <metric>mean-group-size</metric>
     <metric>var-group-size</metric>
