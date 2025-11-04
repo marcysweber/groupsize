@@ -1632,6 +1632,17 @@ ticks
 30.0
 
 SWITCH
+0
+0
+0
+0
+NIL
+NIL
+1
+1
+-1000
+
+SWITCH
 29
 594
 155
@@ -2074,17 +2085,6 @@ SWITCH
 make_csv_weekly_group_level?
 make_csv_weekly_group_level?
 0
-1
--1000
-
-SWITCH
-375
-334
-586
-367
-variation_tgt_neighbors?
-variation_tgt_neighbors?
-1
 1
 -1000
 

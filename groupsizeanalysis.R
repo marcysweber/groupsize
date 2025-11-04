@@ -9,6 +9,7 @@ library(reshape2)
 library(ggrepel)
 library(data.table)
 library(ggpubr)
+library(dplyr)
 
 #library(tidyverse)
 
@@ -3067,3 +3068,196 @@ a <- ggplot(resultsGS, aes(x = `abundance`, y = `clump-size`, fill = log(`var-gr
 
 
 ###############
+
+
+#April 2025
+###########
+setwd("/Users/me597/Documents/group_size_output")
+
+files <- list.files(path = "/Users/me597/Documents/group_size_output", pattern = "*.csv")
+group.level <- lapply(files, read.delim, header = TRUE, sep = ",")
+
+groupLevelDF <- bind_rows(group.level, .id = "column_label")
+groupLevelDF$clump <- as.factor(groupLevelDF$clump)
+
+
+colvar <- groupLevelDF$abundance
+
+refinedgrouplevelDF <- groupLevelDF[groupLevelDF$abundance==200000,]
+refinedgrouplevelDF <- refinedgrouplevelDF[refinedgrouplevelDF$energy.per.capita ==4000,]
+
+
+a <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==1,], aes(x = log10(group.size), y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2) +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Clump size = 1")
+b <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==126,], aes(x = log10(group.size),y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ stat_smooth(method = "lm", 
+                            formula = y ~ x, 
+                            geom = "smooth")  + 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==251,], aes(x = log10(group.size),y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 251")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+d <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==501,], aes(x = log10(group.size), y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 501")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+multiplot(a,b,c,d, cols=2)
+
+
+a <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==1,], aes(x = log10(group.size), y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2) +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Clump size = 1")
+b <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==126,], aes(x = log10(group.size),y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ stat_smooth(method = "lm", 
+                                                 formula = y ~ x, 
+                                                 geom = "smooth")  + 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==251,], aes(x = log10(group.size),y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 251")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+d <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==501,], aes(x = log10(group.size), y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 501")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+multiplot(a,b,c,d, cols=2)
+
+
+
+a<-ggplot(groupLevelDF[groupLevelDF$run.number==11,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 11")
+
+
+
+b<-ggplot(groupLevelDF[groupLevelDF$run.number==12,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 12")
+
+
+
+c<-ggplot(groupLevelDF[groupLevelDF$run.number==13,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 13")
+
+
+
+d<-ggplot(groupLevelDF[groupLevelDF$run.number==14,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 14")
+
+multiplot(a,b,c,d, cols=2)
+
+
+
+slopedf <- data.frame(matrix(ncol = 12, nrow = length(group.level)))
+colnames(slopedf) <- c("run.number", "tgt.neighbor", "tgt.dist", "abundance", "energy.per.capita", "clump", "patch.size", "extraction", "patch.regrowth.interval", "max.move", "intercept", "slope")
+
+for (i in 1:length(group.level)) {
+  df <- group.level[i][[1]]
+  looplm <- lm((group.mean.weekly.distance.travelled~group.size), data = df)
+  
+  
+  slopedf[i,]<- c(df[1,]$run.number, df[1,]$tgt.neighbor, df[1,]$tgt.dist, df[1,]$abundance, df[1,]$energy.per.capita, df[1,]$clump, df[1,]$patch.size, df[1,]$extraction, df[1,]$patch.regrowth.interval, df[1,]$max.move,looplm$coefficients[1], looplm$coefficients[2])
+
+}
+
+plot(slopedf$energy.per.capita, slopedf$slope)
+
+
+
+
+
+
+refinedSlopeDF <- slopedf[slopedf$abundance==200000,]
+
+ggplot(refinedSlopeDF, aes(x = clump, y = intercept, color = energy.per.capita)) +
+  geom_point()
+
+ggplot(slopedf, aes(x = energy.per.capita, y = clump, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = energy.per.capita, y = abundance, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = abundance, y = clump, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+############
