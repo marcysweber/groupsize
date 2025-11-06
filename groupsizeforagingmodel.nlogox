@@ -318,10 +318,29 @@ end
 
 to assign_indiv_tgt_neighbor
   (ifelse variation_tgt_neighbor? [
+    
+    let lower-value 0
+    let higher-value 0
+    
+    (ifelse tgt_neighbor_setting = "a" [
+        set lower-value 3
+        set higher-value 11
+      ] tgt_neighbor_setting = "b" [
+        set lower-value 5
+        set higher-value 9
+      ] tgt_neighbor_setting = "c" [
+        set lower-value 3 
+        set higher-value 7
+      ][
+        set lower-value 7
+        set higher-value 11
+      ]
+    )
+    
     (ifelse who < (starting-pop-primates / 2) [
-      set indiv-tgt-neighbor 3
+      set indiv-tgt-neighbor lower-value
     ][
-      set indiv-tgt-neighbor 11
+      set indiv-tgt-neighbor higher-value
     ])
   ][
     set indiv-tgt-neighbor tgt-neighbor ;; if the switch is off, everybody gets the same tgt-neighbor, as determined by the slider
@@ -465,6 +484,10 @@ to find_nearest_primates
       ]
     ]
     set visible-primates visible-and-group
+  ]
+  
+  if variation_tgt_neighbor? [
+    set visible-primates visible-primates with [indiv-tgt-neighbor = [indiv-tgt-neighbor] of myself]
   ]
 
   ifelse (count visible-primates > cap-nearest-primates) [
@@ -1189,7 +1212,7 @@ end
 
 to make_indiv_output_data
   (if make_indiv_output_data? [
-        let folder-path "/Users/me591666/Documents/group_size_indiv_output"
+        let folder-path "/Users/me591666/Documents/group_size_indiv_output3"
         set-current-directory folder-path
         let file-name (word behaviorspace-experiment-name behaviorspace-run-number ".csv")
     
@@ -1198,6 +1221,7 @@ to make_indiv_output_data
       file-type "run number, "
       file-type "ticks, "
       file-type "tgt-dist, "
+      file-type "tgt-neighbor-setting, "
       file-type "abundance, "
       file-type "energy-per-capita, "
       file-type "clump, "
@@ -1217,6 +1241,7 @@ to make_indiv_output_data
         file-type (word behaviorspace-run-number ", ")
         file-type (word ticks ", ")
         file-type (word tgt-dist ", ")
+        file-type (word tgt_neighbor_setting ", ")
         file-type (word abundance ", ")
         file-type (word energy-per-capita ", ")
         file-type (word clump-size ", ")
@@ -1240,7 +1265,7 @@ end
 
 to make_csv_weekly_group_level_data
   (if make_csv_weekly_group_level?  [
-    let folder-path "/Users/me591666/Documents/group_size_group_output"
+    let folder-path "/Users/me591666/Documents/group_size_group_output3"
     set-current-directory folder-path
     let file-name (word behaviorspace-experiment-name behaviorspace-run-number ".csv")
 
@@ -1779,6 +1804,12 @@ end]]></code>
     <switch x="395" y="83" height="40" on="true" variable="variation_tgt_neighbor?" width="211" display="variation_tgt_neighbor?"></switch>
     <switch x="399" y="424" height="40" on="true" variable="make_indiv_output_data?" width="172" display="make_indiv_output_data?"></switch>
     <button x="577" y="424" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="86" display="indiv output">make_indiv_output_data</button>
+    <chooser x="534" y="157" height="60" variable="tgt_neighbor_setting" current="0" width="250" display="tgt_neighbor_setting">
+      <choice type="string" value="a"></choice>
+      <choice type="string" value="b"></choice>
+      <choice type="string" value="c"></choice>
+      <choice type="string" value="d"></choice>
+    </chooser>
   </widgets>
   <info>## WHAT IS IT?
 
@@ -8631,7 +8662,9 @@ end]]></code>
         <enumeratedValueSet variable="move-tests-on?">
           <value value="false"></value>
         </enumeratedValueSet>
-        <steppedValueSet variable="tgt-neighbor" first="3" step="2" last="11"></steppedValueSet>
+        <enumeratedValueSet variable="tgt-neighbor">
+          <value value="7"></value>
+        </enumeratedValueSet>
         <enumeratedValueSet variable="resource-detection-radius">
           <value value="50"></value>
         </enumeratedValueSet>
@@ -8650,6 +8683,12 @@ end]]></code>
         </enumeratedValueSet>
         <enumeratedValueSet variable="make_indiv_output_data?">
           <value value="true"></value>
+        </enumeratedValueSet>
+        <enumeratedValueSet variable="tgt_neighbor_setting">
+          <value value="&quot;a&quot;"></value>
+          <value value="&quot;b&quot;"></value>
+          <value value="&quot;c&quot;"></value>
+          <value value="&quot;d&quot;"></value>
         </enumeratedValueSet>
       </constants>
     </experiment>

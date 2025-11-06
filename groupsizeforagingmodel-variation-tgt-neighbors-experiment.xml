@@ -1,0 +1,78 @@
+
+<experiments>
+  <experiment name="variation-tgt-neighbors" repetitions="1" sequentialRunOrder="true" runMetricsEveryStep="false" timeLimit="4300">
+    <setup>setup</setup>
+    <go>go</go>
+    <postRun>make_indiv_output_data</postRun>
+    <metrics>
+      <metric>mean-group-size</metric>
+      <metric>var-group-size</metric>
+      <metric>percent-grouped</metric>
+      <metric>foraging-efficiency-time</metric>
+      <metric>foraging-efficiency-dist</metric>
+      <metric>mean-distance-traveled</metric>
+      <metric>mean-percent-time-moving</metric>
+      <metric>var-energy-intake-monthly</metric>
+      <metric>mean-inter-indiv-dist</metric>
+    </metrics>
+    <constants>
+      <steppedValueSet variable="abundance" first="200000" step="225000" last="1200000"></steppedValueSet>
+      <enumeratedValueSet variable="extraction-rate-sd">
+        <value value="1"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="resource-tests-on?">
+        <value value="false"></value>
+      </enumeratedValueSet>
+      <steppedValueSet variable="patch-regrowth-interval" first="500" step="500" last="2500"></steppedValueSet>
+      <steppedValueSet variable="extraction-rate-mean" first="2" step="4" last="8"></steppedValueSet>
+      <steppedValueSet variable="energy-per-capita" first="4000" step="1250" last="9000"></steppedValueSet>
+      <enumeratedValueSet variable="qual-sd">
+        <value value="5"></value>
+      </enumeratedValueSet>
+      <steppedValueSet variable="tgt-dist" first="1" step="10" last="41"></steppedValueSet>
+      <enumeratedValueSet variable="other-primate-detection-radius">
+        <value value="70"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="qual-mean">
+        <value value="130"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="movement-noise">
+        <value value="10"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="go-tests-on?">
+        <value value="false"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="move-tests-on?">
+        <value value="false"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="tgt-neighbor">
+        <value value="7"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="resource-detection-radius">
+        <value value="50"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="max-move">
+        <value value="10"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="regrowth-rate">
+        <value value="1"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="group-recog-module?">
+        <value value="true"></value>
+      </enumeratedValueSet>
+      <steppedValueSet variable="clump-size" first="1" step="125" last="501"></steppedValueSet>
+      <enumeratedValueSet variable="variation_tgt_neighbor?">
+        <value value="true"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="make_indiv_output_data?">
+        <value value="true"></value>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="tgt_neighbor_setting">
+        <value value="&quot;a&quot;"></value>
+        <value value="&quot;b&quot;"></value>
+        <value value="&quot;c&quot;"></value>
+        <value value="&quot;d&quot;"></value>
+      </enumeratedValueSet>
+    </constants>
+  </experiment>
+</experiments>
