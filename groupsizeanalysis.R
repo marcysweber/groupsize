@@ -3271,5 +3271,487 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
 
 ############
 
-save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, VidalCardaso, KamilarCooperactivitybudgetdata, file="figuredata.RData")
+############
 
+#Nov 2025 - group-level and indiv-level
+#######
+
+#extracting the two sets of files for group-level and indiv-level
+setwd("/Users/me591666/Documents/group_size_group_output3")
+files <- list.files(path = "/Users/me591666/Documents/group_size_group_output3", pattern = "*.csv")
+group.level <- lapply(files, read.delim, header = TRUE, sep = ",")
+groupLevelDF <- bind_rows(group.level, .id = "column_label")
+groupLevelDF$clump <- as.factor(groupLevelDF$clump)
+
+setwd("/Users/me591666/Documents/group_size_indiv_output3")
+files <- list.files(path = "/Users/me591666/Documents/group_size_indiv_output3", pattern = "*.csv")
+indiv.level <- lapply(files, read.delim, header = TRUE, sep = ",")
+indivLevelDF <- bind_rows(indiv.level, .id = "column_label")
+indivLevelDF$clump <- as.factor(indivLevelDF$clump)
+indivLevelDF$indiv.tgt.neighbor <- as.factor(indivLevelDF$indiv.tgt.neighbor)
+
+
+
+
+a <- ggplot(groupLevelDF[groupLevelDF$clump==1,], aes(x = log10(group.size), y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2) +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Clump size = 1")
+b <- ggplot(groupLevelDF[groupLevelDF$clump==126,], aes(x = log10(group.size),y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ stat_smooth(method = "lm", 
+                                                 formula = y ~ x, 
+                                                 geom = "smooth")  + 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(groupLevelDF[groupLevelDF$clump==251,], aes(x = log10(group.size),y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 251")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+d <- ggplot(groupLevelDF[groupLevelDF$clump==501,], aes(x = log10(group.size), y = group.mean.weekly.intake))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 501")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+multiplot(a,b,c,d, cols=2)
+
+
+
+
+ggplot(indivLevelDF, aes(x=indiv.tgt.neighbor, y=intake, fill = clump))+geom_violin()
+ggplot(indivLevelDF, aes(x=indiv.tgt.neighbor, y=distance.travelled, fill = clump))+geom_violin()
+
+
+a <- ggplot(indivLevelDF[indivLevelDF$clump==1,], aes(x=indiv.tgt.neighbor, y=distance.travelled))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 1")
+
+b <- ggplot(indivLevelDF[indivLevelDF$clump==126,], aes(x=indiv.tgt.neighbor, y=distance.travelled))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(indivLevelDF[indivLevelDF$clump==251,], aes(x=indiv.tgt.neighbor, y=distance.travelled))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 251")
+
+d <- ggplot(indivLevelDF[indivLevelDF$clump==501,], aes(x=indiv.tgt.neighbor, y=distance.travelled))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 501")
+
+multiplot(a,b,c,d, cols=2)
+
+
+a <- ggplot(indivLevelDF[indivLevelDF$clump==1,], aes(x=indiv.tgt.neighbor, y=intake))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 1")
+
+b <- ggplot(indivLevelDF[indivLevelDF$clump==126,], aes(x=indiv.tgt.neighbor, y=intake))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(indivLevelDF[indivLevelDF$clump==251,], aes(x=indiv.tgt.neighbor, y=intake))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 251")
+
+d <- ggplot(indivLevelDF[indivLevelDF$clump==501,], aes(x=indiv.tgt.neighbor, y=intake))+
+  geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")+ 
+  labs(title = "Clump size = 501")
+
+multiplot(a,b,c,d, cols=2)
+
+
+
+
+
+
+
+
+ggplot(indivLevelDF, aes(x=indiv.tgt.neighbor, y=log(group.size.mean)))+geom_violin()+ 
+  stat_summary(fun = "median",
+               geom = "point",
+               color = "red")
+#trying different controls
+a<-ggplot(indivLevelDF[" a" == indivLevelDF$tgt.neighbor.setting,], aes(x=indiv.tgt.neighbor, y=log(group.size.mean), fill = as.factor(abundance)))+geom_violin()+ 
+  stat_summary(fun = "median",
+               geom = "point",
+               color = "red")
+
+b<-ggplot(indivLevelDF[" b" == indivLevelDF$tgt.neighbor.setting,], aes(x=indiv.tgt.neighbor, y=log(group.size.mean), fill = as.factor(abundance)))+geom_violin()+ 
+  stat_summary(fun = "median",
+               geom = "point",
+               color = "red")
+
+c<-ggplot(indivLevelDF[" c" == indivLevelDF$tgt.neighbor.setting,], aes(x=indiv.tgt.neighbor, y=log(group.size.mean), fill = as.factor(abundance)))+geom_violin()+ 
+  stat_summary(fun = "median",
+               geom = "point",
+               color = "red")
+
+
+d<- ggplot(indivLevelDF[" d" == indivLevelDF$tgt.neighbor.setting,], aes(x=indiv.tgt.neighbor, y=log(group.size.mean), fill = as.factor(abundance)))+geom_violin()+ 
+  stat_summary(fun = "median",
+               geom = "point",
+               color = "red")
+
+multiplot(a,b,c,d, cols = 2)
+
+ggplot(indivLevelDF, aes(x=indiv.tgt.neighbor, y=(group.size.mean), fill = as.factor(abundance)))+geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")
+
+
+ggplot(indivLevelDF, aes(x=indiv.tgt.neighbor, y=(group.size.mean), fill = as.factor(energy.per.capita)))+geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")
+
+indivDFnew <- indivLevelDF[indivLevelDF$energy.per.capita==9000,]
+indivDFnew <- indivDFnew[indivDFnew$abundance == 200000,]
+indivDFnew <- indivDFnew[indivDFnew$tgt.neighbor.setting==" c",]
+ggplot(indivDFnew, aes(x=indiv.tgt.neighbor, y=(group.size.mean)))+geom_violin()+ 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red")
+
+
+
+ggplot(indivLevelDF[" a" == indivLevelDF$tgt.neighbor.setting,], aes(x = indiv.tgt.neighbor, y = group.size.mean)) +
+  geom_boxplot() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ energy.per.capita, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Individual Target Neighbor",
+       y = "Mean Group Size") +
+  my_theme
+
+
+ggplot(indivLevelDF[" a" == indivLevelDF$tgt.neighbor.setting,], aes(x = indiv.tgt.neighbor, y = group.size.median)) +
+  geom_boxplot() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ energy.per.capita, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Individual Target Neighbor",
+       y = "Median Group Size") +
+  my_theme
+
+ggplot(indivLevelDF[" a" == indivLevelDF$tgt.neighbor.setting,], aes(x = indiv.tgt.neighbor, y = group.size.median)) +
+  geom_boxplot() +  # or geom_line() depending on what you want
+  facet_grid(clump ~ energy.per.capita, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Individual Target Neighbor",
+       y = "Median Group Size") +
+  my_theme
+
+
+ggplot(indivLevelDF[indivLevelDF$clump==1 & indivLevelDF$tgt.neighbor.setting==" a",], aes(x = indiv.tgt.neighbor, y = group.size.median)) +
+  geom_boxplot() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ energy.per.capita, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Individual Target Neighbor",
+       y = "Median Group Size") +
+  my_theme
+
+
+a <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==1,], aes(x = log10(group.size), y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2) +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Clump size = 1")
+b <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==126,], aes(x = log10(group.size),y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ stat_smooth(method = "lm", 
+                                                 formula = y ~ x, 
+                                                 geom = "smooth")  + 
+  labs(title = "Clump size = 126")
+
+c <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==251,], aes(x = log10(group.size),y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 251")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+d <- ggplot(refinedgrouplevelDF[refinedgrouplevelDF$clump==501,], aes(x = log10(group.size), y = group.mean.weekly.distance.travelled))+
+  geom_point(alpha = 0.5, size=0.2)+ 
+  labs(title = "Clump size = 501")+ stat_smooth(method = "lm", 
+                                                formula = y ~ x, 
+                                                geom = "smooth")
+
+multiplot(a,b,c,d, cols=2)
+
+
+
+a<-ggplot(groupLevelDF[groupLevelDF$run.number==11,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 11")
+
+
+
+b<-ggplot(groupLevelDF[groupLevelDF$run.number==12,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 12")
+
+
+
+c<-ggplot(groupLevelDF[groupLevelDF$run.number==13,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 13")
+
+
+
+d<-ggplot(groupLevelDF[groupLevelDF$run.number==14,], aes(x = group.size, y = group.mean.weekly.distance.travelled))+
+  geom_point() +
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")  + 
+  labs(title = "Run Number 14")
+
+multiplot(a,b,c,d, cols=2)
+
+
+##CALCULATE SLOPES
+group.level <- Filter(function(df) !all(df == 0), group.level)
+slopedf <- data.frame(matrix(ncol = 14, nrow = length(group.level)))
+colnames(slopedf) <- c("run.number", "tgt.neighbor", "tgt.dist", "abundance", "energy.per.capita", "clump", "patch.size", "extraction", "patch.regrowth.interval", "max.move", "travelintercept", "travelslope", "intakeintercept", "intakeslope")
+
+
+
+
+for (i in 1:length(group.level)) {
+  df <- group.level[i][[1]]
+  travellm <- lm((group.mean.weekly.distance.travelled~group.size), data = df)
+  intakelm <- lm((group.mean.weekly.intake~group.size), data = df)
+  
+  slopedf[i,]<- c(df[1,]$run.number, df[1,]$tgt.neighbor, df[1,]$tgt.dist, df[1,]$abundance, df[1,]$energy.per.capita, df[1,]$clump, df[1,]$patch.size, df[1,]$extraction, df[1,]$patch.regrowth.interval, df[1,]$max.move,travellm$coefficients[1], travellm$coefficients[2], intakelm$coefficients[1],intakelm$coefficients[2])
+  
+}
+
+slopedf<-na.omit(slopedf)
+
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+#clump = 1
+simple_z(slopedf[slopedf$clump==1,]$travelslope)
+simple_z(slopedf[slopedf$clump==1,]$intakeslope)
+
+#clump = 126
+simple_z(slopedf[slopedf$clump==126,]$travelslope)
+simple_z(slopedf[slopedf$clump==126,]$intakeslope)
+
+#clump = 501
+simple_z(slopedf[slopedf$clump==501,]$travelslope)
+simple_z(slopedf[slopedf$clump==501,]$intakeslope)
+
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+
+
+
+hist(slopedf[slopedf$clump==1,]$travelslope)
+hist(slopedf[slopedf$clump==1,]$intakeslope)
+
+
+#permutation test by Claude
+# Calculate observed z-scores by clump
+obs_z_by_clump <- tapply(1:nrow(groupLevelDF), groupLevelDF$clump, function(idx) {
+  clump_data <- groupLevelDF[idx, ]
+  m <- lm(group.mean.weekly.intake ~ group.size, data = clump_data)
+  coef(m)[2] / summary(m)$coefficients[2, "Std. Error"]
+})
+
+# Observed variance in z-scores
+obs_var <- var(obs_z_by_clump)
+
+# Permutation test
+n_perm <- 10000
+perm_vars <- replicate(n_perm, {
+  # Shuffle clump labels
+  shuffled_data <- groupLevelDF
+  shuffled_data$clump <- sample(shuffled_data$clump)
+  
+  # Recalculate z-scores for each clump
+  perm_z <- tapply(1:nrow(shuffled_data), shuffled_data$clump, function(idx) {
+    clump_data <- shuffled_data[idx, ]
+    m <- lm(group.mean.weekly.intake ~ group.size, data = clump_data)
+    coef(m)[2] / summary(m)$coefficients[2, "Std. Error"]
+  })
+  
+  var(perm_z)
+})
+
+# P-value (one-tailed: is observed variance larger than expected?)
+p_value <- mean(perm_vars >= obs_var)
+
+# Visualize
+hist(perm_vars, main = "Null distribution of z-score variance",
+     xlab = "Variance of z-scores across clumps")
+abline(v = obs_var, col = "red", lwd = 2)
+
+
+
+
+
+
+
+ggplot(slopedf, aes(x = intakeslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Slopes, intake ~ group size",
+       y = "Freq") +
+  my_theme +
+  geom_vline(xintercept = 0, color = "red")
+
+
+ggplot(slopedf, aes(x = travelslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Slopes, distance traveled ~ group size",
+       y = "Freq") +
+  my_theme +
+  geom_vline(xintercept = 0, color = "red")
+
+
+summaryslopedf <- slopedf[slopedf$clump==1 | slopedf$clump==126 | slopedf$clump==501,]
+summaryslopedf <- summaryslopedf[summaryslopedf$abundance==200000 | summaryslopedf$abundance==650000 | summaryslopedf$abundance==875000,]
+summaryslopedf <- droplevels(summaryslopedf)
+
+summaryslopedf$abundance <- factor(summaryslopedf$abundance)
+summaryslopedf$clump <- factor(summaryslopedf$clump)
+summaryslopedf <- na.omit(summaryslopedf)
+
+ggplot(summaryslopedf, aes(x = intakeslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Slopes, intake ~ group size",
+       y = "Freq") +
+  my_theme +
+  geom_vline(xintercept = 0, color = "red")
+
+
+ggplot(summaryslopedf, aes(x = travelslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(x = "Slopes, distance traveled ~ group size",
+       y = "Freq") +
+  my_theme +
+  geom_vline(xintercept = 0, color = "red")
+
+
+
+
+
+simple_z(summaryslopedf$travelslope)
+
+
+
+
+refinedSlopeDF <- slopedf[slopedf$clump==1,]
+
+ggplot(refinedSlopeDF, aes(x = clump, y = intercept, color = energy.per.capita)) +
+  geom_point()
+
+ggplot(slopedf, aes(x = energy.per.capita, y = clump, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = energy.per.capita, y = abundance, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = abundance, y = clump, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray75"),
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
+
+
+#save to RData for Figure files
+#######
+
+save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, VidalCardaso, KamilarCooperactivitybudgetdata, file="figuredata.RData")
+######
