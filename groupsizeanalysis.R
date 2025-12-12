@@ -1181,12 +1181,12 @@ multiplot(a, c, b, d, cols = 2)
 
 
 
-#foraging efficiency
+#foraging intake rate
 
-a <- ggplot(regrowth_maxmove, aes(x = patch.regrowth.interval, y = max.move, fill = foraging.efficiency.dist)) +
+a <- ggplot(regrowth_maxmove, aes(x = patch.regrowth.interval, y = max.move, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("regrowth interval")+
   ylab("movement speed") +  
   theme(
@@ -1202,10 +1202,10 @@ a <- ggplot(regrowth_maxmove, aes(x = patch.regrowth.interval, y = max.move, fil
 
 
 
-b <- ggplot(qualmean_maxmove, aes(x = qual.mean, y = max.move, fill = foraging.efficiency.dist)) +
+b <- ggplot(qualmean_maxmove, aes(x = qual.mean, y = max.move, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("patch quality")+
   ylab("movement speed") +  
   theme(
@@ -1220,10 +1220,10 @@ b <- ggplot(qualmean_maxmove, aes(x = qual.mean, y = max.move, fill = foraging.e
   )
 
 
-c <- ggplot(clump_maxmove, aes(x = clump.size, y = max.move, fill = foraging.efficiency.dist)) +
+c <- ggplot(clump_maxmove, aes(x = clump.size, y = max.move, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("clump size")+
   ylab("movement speed") +  
   theme(
@@ -1239,10 +1239,10 @@ c <- ggplot(clump_maxmove, aes(x = clump.size, y = max.move, fill = foraging.eff
 
 
 
-d <- ggplot(regrowth_qualmean, aes(x = patch.regrowth.interval, y = qual.mean, fill = foraging.efficiency.dist)) +
+d <- ggplot(regrowth_qualmean, aes(x = patch.regrowth.interval, y = qual.mean, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("regrowth interval")+
   ylab("patch quality") +  
   theme(
@@ -1257,10 +1257,10 @@ d <- ggplot(regrowth_qualmean, aes(x = patch.regrowth.interval, y = qual.mean, f
   )
 
 
-e <- ggplot(regrowth_clump, aes(x = clump.size, y = patch.regrowth.interval, fill = foraging.efficiency.dist)) +
+e <- ggplot(regrowth_clump, aes(x = clump.size, y = patch.regrowth.interval, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("clump size")+
   ylab("regrowth interval") +  
   theme(
@@ -1275,10 +1275,10 @@ e <- ggplot(regrowth_clump, aes(x = clump.size, y = patch.regrowth.interval, fil
   )
 
 
-f <- ggplot(qualmean_clump, aes(x = clump.size, y = qual.mean, fill = foraging.efficiency.dist)) +
+f <- ggplot(qualmean_clump, aes(x = clump.size, y = qual.mean, fill = foraging.efficiency.time)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
-  labs(title = "", fill = "foraging eff") +
+  labs(title = "", fill = "energy \nintake \nrate") +
   xlab("clump size")+
   ylab("patch quality") +  
   theme(
@@ -2237,7 +2237,7 @@ c <- ggplot(clump_energypercap, aes(x = energy.per.capita, y = clump.size, fill 
   )
 
 #extraction rate mean and sp3eed
-setwd("C:/Users/Marcy/Desktop/group size heatmap analysis")
+#setwd("C:/Users/Marcy/Desktop/group size heatmap analysis")
 extraction_maxmove <- read.delim("basemodelprimatesocialgroups group size extraction rate mean x speed-table.csv", skip = 6, header = TRUE, sep = ",")
 d <- ggplot(extraction_maxmove, aes(x = extraction.rate.mean, y = max.move, fill = mean.distance.traveled/17.9)) +
   geom_tile()+
@@ -2818,7 +2818,7 @@ e <- ggplot(extraction_clump, aes(x = extraction.rate.mean, y = clump.size, fill
 
 
 
-tgtdist_clump <- read.delim("basemodelprimatesocialgroups group size target distance x clump size-table.csv", skip = 6, header = TRUE, sep = ",")
+#tgtdist_clump <- read.delim("basemodelprimatesocialgroups group size target distance x clump size-table.csv", skip = 6, header = TRUE, sep = ",")
 f <- ggplot(tgtdist_clump, aes(x = tgt.dist, y = clump.size, fill = mean.inter.indiv.dist)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
@@ -2836,7 +2836,7 @@ f <- ggplot(tgtdist_clump, aes(x = tgt.dist, y = clump.size, fill = mean.inter.i
     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
   )
 
-tgtdist_abundance <- read.delim("basemodelprimatesocialgroups group size target distance x abundance-table.csv", skip = 6, header = TRUE, sep = ",")
+#tgtdist_abundance <- read.delim("basemodelprimatesocialgroups group size target distance x abundance-table.csv", skip = 6, header = TRUE, sep = ",")
 g <- ggplot(tgtdist_abundance, aes(x = tgt.dist, y = abundance, fill = mean.inter.indiv.dist)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
@@ -2853,7 +2853,7 @@ g <- ggplot(tgtdist_abundance, aes(x = tgt.dist, y = abundance, fill = mean.inte
     panel.grid.major = element_line(color = "gray75"),
     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
   )
-tgtdist_extraction <- read.delim("basemodelprimatesocialgroups group size target distance x extraction rate mean-table.csv", skip = 6, header = TRUE, sep = ",")
+#tgtdist_extraction <- read.delim("basemodelprimatesocialgroups group size target distance x extraction rate mean-table.csv", skip = 6, header = TRUE, sep = ",")
 h <- ggplot(tgtdist_extraction, aes(x = tgt.dist, y = extraction.rate.mean, fill = mean.inter.indiv.dist)) +
   geom_tile()+
   scale_fill_distiller(palette = "YlGn", direction = 1) +
@@ -3752,6 +3752,9 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
 
 #save to RData for Figure files
 #######
+setwd("/Users/me597/Documents/GitHub/groupsize/figuredata")
+save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, file="figuredata.RData")
 
-save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, VidalCardaso, KamilarCooperactivitybudgetdata, file="figuredata.RData")
+save(VidalCardaso, KamilarCooperactivitybudgetdata, analysisGS, pop.level, tgtdist_extraction, tgtdist_abundance, tgtdist_clump, extraction_regrowth, extraction_energypercap, extraction_clump, clump_energypercap, regrowth_clump, extraction_maxmove, groupLevelDF, file = "supplementalfiguredata.RData")
+
 ######
