@@ -17,12 +17,38 @@ musigma_processing <- function(data) {
   return(dcast(data, metric + parameter ~ index))
 }
 
-source("~/my_R_functions.R")
+multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
+  require(grid)
+  
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  if (is.null(layout)) {
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots == 1) {
+    print(plots[[1]])
+    
+  } else {
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    for (i in 1:numPlots) {
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
 
 
-netlogopath <- file.path("/Applications/NetLogo 7.0.2")
-modelpath <- file.path("/Users/me591666/Documents/GitHub/groupsize/groupsizeforagingmodel.nlogox")
-outpath <- file.path("/Users/me591666/Desktop")
+netlogopath <- file.path("/Program Files/NetLogo 6.2.2")
+modelpath <- file.path("C:\\Users\\Marcy\\Documents\\GitHub\\primate-social-groups-model\\basemodelprimatesocialgroups.nlogo")
+outpath <- file.path("C:\\Users\\Marcy\\Desktop\\")
 #####
 
 #visualization vars
@@ -61,11 +87,7 @@ h0metrics <- c(
 h0constants <- list("group-recog-module?" = "true",
                        "go-tests-on?" = "false",
                        "resource-tests-on?" = "false",
-                       "move-tests-on?" = "false",
-                    "variation_tgt_neighbor?" = "false",
-                    "make_indiv_output_data?" = "false",
-                    "make_csv_weekly_group_level?" = "false",
-                    "tgt_neighbor_setting" = "a") 
+                       "move-tests-on?" = "false") 
 
 #parameters for H0, group size chapter
 #all parameters from H0 of gregariousness will be included
@@ -91,7 +113,7 @@ h0vars <- list(
 
 #set up NLRX experiment for H0 (pattern-matching and group verification)
 
-nlh0 <- nl(nlversion = "7.0.2",
+nlh0 <- nl(nlversion = "6.2.2",
               nlpath = netlogopath,
               modelpath = modelpath,
               jvmmem = 12000)
@@ -326,6 +348,8 @@ hist(resultsGS$`mean-percent-time-moving`)
 hist(resultsGS$`percent-grouped`)
 
 
+saveRDS(VidalCardaso, file="figuredata/VidalCardaso.RData")
+saveRDS(KamilarCooperactivitybudgetdata, file="figuredata/KamilarCooper.RData")
 
 #daily path length, comparison Vidal-Cordasco data and model output
 a<- ggplot(VidalCardaso, aes(x = `DMD (km/day)`)) +
@@ -447,6 +471,8 @@ hist(resultsGS$`mean-group-size`)
 
 
 #GS figure 3A
+saveRDS(resultsGS, file = "figuredata/groupsizeMEEresults.RData")
+
 a <- ggplot(resultsGS, aes(`mean-group-size`)) +
   geom_histogram(bins = 20, aes(y=..count../sum(..count..)), fill="grey25", col="white") +
   scale_x_log10() +
@@ -1093,6 +1119,8 @@ setwd("C:/Users/Marcy/Desktop/group size heatmap analysis/extra reps")
 earlymarfiles <- list.files(path = "/Users/Marcy/Desktop/Marcy dissertatin stuff/group size heatmap analysis/extra reps", pattern = "*.csv")
 GSheatmapdata <- lapply(earlymarfiles, read.delim, skip = 6, header = TRUE, sep = ",")
 
+saveRDS(GSheatmapdata, file = "figuredata/groupsizehealthmapdata.RData")
+
 newclumpabun <- GSheatmapdata[[1]]
 newclumpenergypercap <- GSheatmapdata[[2]]
 newenergypercapabun <- GSheatmapdata[[3]]
@@ -1332,7 +1360,7 @@ ggplot(p1.3dataattempt1, aes(x=group.size, y=foraging.efficiency.dist, color = c
 
 ######
 
-#foraging efficiency ~ group size p1.2 and 0p1.3 analysis second attempt
+#foraging success ~ group size p1.2 and 0p1.3 analysis second attempt
 ##############
 setwd("C:/Users/Marcy/Desktop/Marcy dissertatin stuff/groupsizep1-2")
 p1.2data <- read.delim("basemodelprimatesocialgroups group size p1-2 p1-3 2nd attempt-table.csv", skip = 6, header = TRUE, sep = ",")
@@ -3048,7 +3076,7 @@ a <- ggplot(resultsGS, aes(x = `abundance`, y = `clump-size`, fill = log(`var-gr
 ###############
 
 
-#April 2025 - group-level
+#April 2025
 ###########
 setwd("/Users/me597/Documents/group_size_output")
 
@@ -3179,6 +3207,9 @@ plot(slopedf$energy.per.capita, slopedf$slope)
 
 refinedSlopeDF <- slopedf[slopedf$abundance==200000,]
 
+ggplot(refinedSlopeDF, aes(x = clump, y = slope, color = energy.per.capita)) +
+  geom_point()
+
 ggplot(refinedSlopeDF, aes(x = clump, y = intercept, color = energy.per.capita)) +
   geom_point()
 
@@ -3237,6 +3268,8 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
     panel.grid.major = element_line(color = "gray75"),
     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
   )
+
+############
 
 ############
 
@@ -3715,3 +3748,10 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
     panel.grid.major = element_line(color = "gray75"),
     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
   )
+
+
+#save to RData for Figure files
+#######
+
+save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, VidalCardaso, KamilarCooperactivitybudgetdata, file="figuredata.RData")
+######
