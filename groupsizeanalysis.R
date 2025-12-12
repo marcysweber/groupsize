@@ -3748,7 +3748,7 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
     panel.grid.major = element_line(color = "gray75"),
     panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),
   )
-
+###########
 
 #save to RData for Figure files
 #######
