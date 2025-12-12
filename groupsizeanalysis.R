@@ -348,6 +348,8 @@ hist(resultsGS$`mean-percent-time-moving`)
 hist(resultsGS$`percent-grouped`)
 
 
+saveRDS(VidalCardaso, file="figuredata/VidalCardaso.RData")
+saveRDS(KamilarCooperactivitybudgetdata, file="figuredata/KamilarCooper.RData")
 
 #daily path length, comparison Vidal-Cordasco data and model output
 a<- ggplot(VidalCardaso, aes(x = `DMD (km/day)`)) +
@@ -469,6 +471,8 @@ hist(resultsGS$`mean-group-size`)
 
 
 #GS figure 3A
+saveRDS(resultsGS, file = "figuredata/groupsizeMEEresults.RData")
+
 a <- ggplot(resultsGS, aes(`mean-group-size`)) +
   geom_histogram(bins = 20, aes(y=..count../sum(..count..)), fill="grey25", col="white") +
   scale_x_log10() +
@@ -1115,6 +1119,8 @@ setwd("C:/Users/Marcy/Desktop/group size heatmap analysis/extra reps")
 earlymarfiles <- list.files(path = "/Users/Marcy/Desktop/Marcy dissertatin stuff/group size heatmap analysis/extra reps", pattern = "*.csv")
 GSheatmapdata <- lapply(earlymarfiles, read.delim, skip = 6, header = TRUE, sep = ",")
 
+saveRDS(GSheatmapdata, file = "figuredata/groupsizehealthmapdata.RData")
+
 newclumpabun <- GSheatmapdata[[1]]
 newclumpenergypercap <- GSheatmapdata[[2]]
 newenergypercapabun <- GSheatmapdata[[3]]
@@ -1354,7 +1360,7 @@ ggplot(p1.3dataattempt1, aes(x=group.size, y=foraging.efficiency.dist, color = c
 
 ######
 
-#foraging efficiency ~ group size p1.2 and 0p1.3 analysis second attempt
+#foraging success ~ group size p1.2 and 0p1.3 analysis second attempt
 ##############
 setwd("C:/Users/Marcy/Desktop/Marcy dissertatin stuff/groupsizep1-2")
 p1.2data <- read.delim("basemodelprimatesocialgroups group size p1-2 p1-3 2nd attempt-table.csv", skip = 6, header = TRUE, sep = ",")
@@ -3201,6 +3207,9 @@ plot(slopedf$energy.per.capita, slopedf$slope)
 
 refinedSlopeDF <- slopedf[slopedf$abundance==200000,]
 
+ggplot(refinedSlopeDF, aes(x = clump, y = slope, color = energy.per.capita)) +
+  geom_point()
+
 ggplot(refinedSlopeDF, aes(x = clump, y = intercept, color = energy.per.capita)) +
   geom_point()
 
@@ -3261,3 +3270,6 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
   )
 
 ############
+
+save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, VidalCardaso, KamilarCooperactivitybudgetdata, file="figuredata.RData")
+
