@@ -21,6 +21,7 @@ library(data.table)
 library(ggpubr)
 library(dplyr)
 library(grid)
+library(knitr)
 
 #library(tidyverse)
 
@@ -70,6 +71,7 @@ heatmaptheme <-
 
 load("figuredata/figuredata.RData")
 load("figuredata/supplementalfiguredata.RData")
+load("figuredata/groupleveldata.RData")
 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 
@@ -1325,14 +1327,107 @@ multiplot(a, b, c, d, e, f, g, h, cols = 2)
 # Supplement/Appendix 3
 This supplement/appendix contains the within-population group-level results.
  
-```{r figurewhatever, echo=FALSE}
+## Figure 3.1
+```{r figure3.1, echo=FALSE, fig.width=5, fig.height=10}
 
-```
+my_theme = theme_bw(base_size = 10)
 
-**Figure Whatever.** This is a caption.
+groupLevelDF <- bind_rows(group.level, .id = "column_label")
+groupLevelDF$clump <- as.factor(groupLevelDF$clump)
+
+
+group.level <- Filter(function(df) !all(df == 0), group.level)
+slopedf <- data.frame(matrix(ncol = 14, nrow = length(group.level)))
+colnames(slopedf) <- c("run.number", "tgt.neighbor", "tgt.dist", "abundance", "energy.per.capita", "clump", "patch.size", "extraction", "patch.regrowth.interval", "max.move", "travelintercept", "travelslope", "intakeintercept", "intakeslope")
+
+
+
+
+for (i in 1:length(group.level)) {
+  df <- group.level[i][[1]]
+  travellm <- lm((group.mean.weekly.distance.travelled~group.size), data = df)
+  intakelm <- lm((group.mean.weekly.intake~group.size), data = df)
+  
+  slopedf[i,]<- c(df[1,]$run.number, df[1,]$tgt.neighbor, df[1,]$tgt.dist, df[1,]$abundance, df[1,]$energy.per.capita, df[1,]$clump, df[1,]$patch.size, df[1,]$extraction, df[1,]$patch.regrowth.interval, df[1,]$max.move,travellm$coefficients[1], travellm$coefficients[2], intakelm$coefficients[1],intakelm$coefficients[2])
+  
+}
+
+slopedf<-na.omit(slopedf)
+
+
+
+
+summaryslopedf <- slopedf[slopedf$clump==1 | slopedf$clump==126 | slopedf$clump==501,]
+summaryslopedf <- summaryslopedf[summaryslopedf$abundance==200000 | summaryslopedf$abundance==650000 | summaryslopedf$abundance==875000,]
+summaryslopedf <- droplevels(summaryslopedf)
+
+summaryslopedf$abundance <- factor(summaryslopedf$abundance)
+summaryslopedf$clump <- factor(summaryslopedf$clump)
+summaryslopedf <- na.omit(summaryslopedf)
+
+a <- ggplot(summaryslopedf, aes(x = intakeslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(title = "a.", x = "Slopes, intake ~ group size",
+       y = "Freq") +
+    xlim(-100,50)+
+  theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10))+
+  geom_vline(xintercept = 0, color = "red")
+
+
+b <- ggplot(summaryslopedf, aes(x = travelslope)) +
+  geom_histogram() +  # or geom_line() depending on what you want
+  facet_grid(abundance ~ clump, 
+             labeller = label_both) +  # Shows "abundance: 10" style labels
+  labs(title = "b.",
+    x = "Slopes, distance traveled ~ group size",
+       y = "Freq") +
+    xlim(-50,150)+
+  theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10))+
+  geom_vline(xintercept = 0, color = "red")
+
+multiplot(a, b, cols = 1)
+
+
 
 ---
 
+```{r tableZScores, echo=FALSE}
 
 
+simple_z <- function(slopes){
+  mean_slope <- mean(slopes)
+  se_mean <- sd(slopes) / sqrt(length(slopes))
+  z_score <- mean_slope / se_mean
+  p_value <- 2 * pnorm(-abs(z_score))
+  
+  print(paste("z-score: ", z_score))
+  print(paste("p-value: ", p_value))
+  
+  return(c(z_score, p_value))
+}
 
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+#clump = 1
+simple_z(slopedf[slopedf$clump==1,]$travelslope)
+simple_z(slopedf[slopedf$clump==1,]$intakeslope)
+
+#clump = 126
+simple_z(slopedf[slopedf$clump==126,]$travelslope)
+simple_z(slopedf[slopedf$clump==126,]$intakeslope)
+
+#clump = 501
+simple_z(slopedf[slopedf$clump==501,]$travelslope)
+simple_z(slopedf[slopedf$clump==501,]$intakeslope)
+
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+simple_z(slopedf$travelslope)
+simple_z(slopedf$intakeslope)
+
+
+```

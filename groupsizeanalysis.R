@@ -3753,8 +3753,10 @@ ggplot(slopedf, aes(x = tgt.dist, y = tgt.neighbor, fill = slope)) +
 #save to RData for Figure files
 #######
 setwd("/Users/me597/Documents/GitHub/groupsize/figuredata")
+setwd("/Users/me591666/Documents/GitHub/groupsize/figureCode/figuredata")
+
 save(resultsGS, GSheatmapdata, p1.2data, tgtneighbor_tgtdistv2, file="figuredata.RData")
 
-save(VidalCardaso, KamilarCooperactivitybudgetdata, analysisGS, pop.level, tgtdist_extraction, tgtdist_abundance, tgtdist_clump, extraction_regrowth, extraction_energypercap, extraction_clump, clump_energypercap, regrowth_clump, extraction_maxmove, group.level,  file = "supplementalfiguredata.RData")
-
+save(VidalCardaso, KamilarCooperactivitybudgetdata, analysisGS, pop.level, tgtdist_extraction, tgtdist_abundance, tgtdist_clump, extraction_regrowth, extraction_energypercap, extraction_clump, clump_energypercap, regrowth_clump, extraction_maxmove, file = "supplementalfiguredata.RData")
+save(group.level, indiv.level, file = "groupleveldata.RData")
 ######
