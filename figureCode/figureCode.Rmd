@@ -1,6 +1,8 @@
 ---
 title: "Figures for Ekanayake-Weber et al. 2026"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 date: "2025-12-12"
 ---
  
@@ -1327,7 +1329,6 @@ multiplot(a, b, c, d, e, f, g, h, cols = 2)
 # Supplement/Appendix 3
 This supplement/appendix contains the within-population group-level results.
  
-## Figure 3.1
 ```{r figure3.1, echo=FALSE, fig.width=5, fig.height=10}
 
 my_theme = theme_bw(base_size = 10)
@@ -1388,10 +1389,19 @@ b <- ggplot(summaryslopedf, aes(x = travelslope)) +
   geom_vline(xintercept = 0, color = "red")
 
 multiplot(a, b, cols = 1)
-
+```
+**Figure 3.1.** Slopes for the effect of group size on foraging success within populations. 
+For each simulation replicate, linear regressions were constructed relating energy intake rate to group size and 
+weekly travel distance to group size. Then, histograms were constructed to compare the frequency of slopes
+differing from zero. Slopes were most different from zero when clump sizes were small and abundance was low. 
+As predicted, the slopes tended to be negative for energy intake rate (a.), and tended to be positive for weekly distance traveled (b.), 
+when they did differ from zero. The same trends are observable using the z scores calculated for each clump size (see Table below).
 
 
 ---
+
+**Table 3.1.** Z scores calculated for the within-population relationships between energy intake rate and group size and weekly travel distance and group size. 
+Note: z scores and p-values should be interpreted with great caution when applied to simulated data. 
 
 ```{r tableZScores, echo=FALSE}
 
@@ -1402,32 +1412,39 @@ simple_z <- function(slopes){
   z_score <- mean_slope / se_mean
   p_value <- 2 * pnorm(-abs(z_score))
   
-  print(paste("z-score: ", z_score))
-  print(paste("p-value: ", p_value))
+  #print(paste("z-score: ", z_score))
+  #print(paste("p-value: ", p_value))
   
   return(c(z_score, p_value))
 }
 
-simple_z(slopedf$travelslope)
-simple_z(slopedf$intakeslope)
+all_clumps <- c(simple_z(slopedf$intakeslope), simple_z(slopedf$travelslope))
 
 #clump = 1
-simple_z(slopedf[slopedf$clump==1,]$travelslope)
-simple_z(slopedf[slopedf$clump==1,]$intakeslope)
+clump_1 <- c(simple_z(slopedf[slopedf$clump==1,]$intakeslope), simple_z(slopedf[slopedf$clump==1,]$travelslope))
 
 #clump = 126
-simple_z(slopedf[slopedf$clump==126,]$travelslope)
-simple_z(slopedf[slopedf$clump==126,]$intakeslope)
+clump_126 <- c(simple_z(slopedf[slopedf$clump==126,]$intakeslope), simple_z(slopedf[slopedf$clump==126,]$travelslope))
+
 
 #clump = 501
-simple_z(slopedf[slopedf$clump==501,]$travelslope)
-simple_z(slopedf[slopedf$clump==501,]$intakeslope)
+clump_501 <- c(simple_z(slopedf[slopedf$clump==501,]$intakeslope), simple_z(slopedf[slopedf$clump==501,]$travelslope))
 
-simple_z(slopedf$travelslope)
-simple_z(slopedf$intakeslope)
+z_score_df <- rbind(all_clumps, clump_1, clump_126, clump_501)
 
-simple_z(slopedf$travelslope)
-simple_z(slopedf$intakeslope)
+#z_score_df <- cbind(c("All clump sizes","Clump size = 1", "Clump size = 126", "Clump size = 501"), z_score_df)
+
+colnames(z_score_df) <- c("Energy intake rate - z score", "Energy intake rate - p-value", "Daily travel distance - z score", "Daily travel distance - p-value")
+
+rownames(z_score_df) <- c("All clump sizes", "Clump size = 1", "Clump size = 126", "Clump size = 501")
+
+kable(z_score_df, digits = 4)
+
+#simple_z(slopedf$travelslope)
+#simple_z(slopedf$intakeslope)
+
+#simple_z(slopedf$travelslope)
+#simple_z(slopedf$intakeslope)
 
 
 ```
