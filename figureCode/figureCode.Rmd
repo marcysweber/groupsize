@@ -79,7 +79,21 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```
 
-# Main Text Figures
+# Main Text Tables and Figures
+
+**Table 1.** Most influential parameters, parameter ranges, and parameter values when held constant.
+
+| Parameter  | Variable Name in NetLogo | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
+| ----------- | ----------- | ----------- | ----------- | ----------- | 
+| Clump size | clump-size | 1-500 | 1, 63, 126, 251, 376, 501 | 250 |
+| Abundance | abundance | 200,000 - 1,200,000 | 200,000 to 1,200,000 in steps of 225,000 | 600,000 |
+| Energy per capita | energy-per-capita | 4,000 - 9,000	| 4,000 to 9,000 in steps of 1250	| 6,500 |
+| Patch regrowth interval | patch-regrowth-interval	| 500 - 2500 |	1000 |	1000 |
+| Extraction rate mean | extraction-rate-mean |	2 - 8	| 5	| 5 |
+| Target distance | tgt-dist |	1 - 40 |	1, 11, 21, 31, 41 |	1 to 41 in steps of 4 |
+| Target neighbors | tgt-neighbors |	3 - 11 |	3, 5, 7, 9, 11 |	3 - 11 |
+
+---
 
 ```{r figure3, echo = FALSE, , fig.width=6, fig.height=5}
 
@@ -166,7 +180,9 @@ multiplot(a, c, b, d, cols = 2)
 
 ---
 
-```{r figure4, echo=FALSE, fig.width=10, fig.height=3}
+```{r figure4, echo=FALSE, fig.width=10.5, fig.height=3}
+
+p1.2data <- p1.2data[p1.2data$mean.group.size != 0,]
 
 bigexp_smallclump <- p1.2data[p1.2data$clump.size==1,]
 bigexp_medsmallclump <- p1.2data[p1.2data$clump.size==126,]
@@ -183,6 +199,16 @@ bigexp_bigbigclump_lm <- lm(foraging.efficiency.dist~mean.group.size, data = big
 
 newsmallclump_lm <- lm(foraging.efficiency.dist~log(mean.group.size), data = newsmallclump)
 
+regressionline <-   stat_regline_equation(label.y = 0, label.x = 1.1, aes(label = after_stat(eq.label))) 
+
+scattertheme <- theme(
+    axis.title = element_text(size = 10, color = "black"),
+    axis.text = element_text(size = 8, color = "black"),
+    
+    panel.grid = element_line(color = "black"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
+  )
 
 a <- ggplot(p1.2data, aes(x=mean.group.size, y=foraging.efficiency.time)) +
   labs(title = "A. all clump sizes") +
@@ -191,15 +217,8 @@ a <- ggplot(p1.2data, aes(x=mean.group.size, y=foraging.efficiency.time)) +
   ylab("energy intake rate") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
-  theme(
-    axis.title = element_text(size = 10, color = "black"),
-    axis.text = element_text(size = 8, color = "black"),
-    
-    panel.grid = element_line(color = "black"),
-    panel.grid.major = element_line(color = "gray90"),
-    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
-  ) +
-  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+ scattertheme +
+ regressionline
 
 b <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=foraging.efficiency.time)) +
   labs(title = "B. clump size = 1") +
@@ -208,15 +227,8 @@ b <- ggplot(p1.2data[p1.2data$clump.size==1,], aes(x=mean.group.size, y=foraging
   ylab("energy intake rate") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
-  theme(
-    axis.title = element_text(size = 10, color = "black"),
-    axis.text = element_text(size = 8, color = "black"),
-    
-    panel.grid = element_line(color = "black"),
-    panel.grid.major = element_line(color = "gray90"),
-    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
-  ) +
-  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+   scattertheme +
+ regressionline
 
 c <- ggplot(rbind(bigexp_medsmallclump), aes(x=mean.group.size, y=foraging.efficiency.time)) +
   labs(title = "c. clump size = 126") +
@@ -225,15 +237,8 @@ c <- ggplot(rbind(bigexp_medsmallclump), aes(x=mean.group.size, y=foraging.effic
   ylab("energy intake rate") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
-  theme(
-    axis.title = element_text(size = 10, color = "black"),
-    axis.text = element_text(size = 8, color = "black"),
-    
-    panel.grid = element_line(color = "black"),
-    panel.grid.major = element_line(color = "gray90"),
-    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
-  ) +
-  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+   scattertheme +
+ regressionline
 
 d <- ggplot(bigexp_bigbigclump, aes(x=mean.group.size, y=foraging.efficiency.time)) +
   labs(title = "d. clump size = 501") +
@@ -242,15 +247,8 @@ d <- ggplot(bigexp_bigbigclump, aes(x=mean.group.size, y=foraging.efficiency.tim
   ylab("energy intake rate") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
-  theme(
-    axis.title = element_text(size = 10, color = "black"),
-    axis.text = element_text(size = 8, color = "black"),
-    
-    panel.grid = element_line(color = "black"),
-    panel.grid.major = element_line(color = "gray90"),
-    panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),
-  ) +
-  stat_regline_equation(label.y = 0, label.x = 1.2, aes(label = after_stat(eq.label))) 
+   scattertheme +
+ regressionline
 
 
 multiplot(a, b, c, d, cols = 4)
@@ -262,12 +260,12 @@ multiplot(a, b, c, d, cols = 4)
 
 ---
 
-```{r figure5, echo=FALSE, fig.width=10, fig.height=3}
+```{r figure5, echo=FALSE, fig.width=10.5, fig.height=3}
 a <- ggplot(p1.2data, aes(x=mean.group.size, y=mean.distance.traveled / 17.9)) +
   labs(title = "A. all clump sizes") + 
   geom_point(size = 0.5, color = "gray25") +
   scale_x_log10(limits=c(2, 150))+ scale_y_log10(limits=c(75, 2250)) +
-  ylab("daily distance traveled") +
+  ylab("daily distance traveled (m)") +
   xlab("population mean group size") +
   geom_smooth(method = "lm", color = "black", se = FALSE)+
   theme(
@@ -409,6 +407,10 @@ multiplot(a, c, b, d, cols = 2)
 ```
 
 **Figure 6.** The relationship between group size and foraging efficiency, mediated by the maximum distance that agents would tolerate being from group members (“target distance”). The number of group members that each agent attempted to keep in proximity (“target neighbors”) was also allowed to vary across these simulations. Each dot represents a population mean of a single simulation. The black lines are linear regressions for each category of target distance. Formulae for the regression lines (using the log group size) are displayed on each plot. **A.** when target distance was less than 20, which meant that agents maintained closer proximity to other group members. **B.** when target distance was greater than 20, which meant that group members tolerated being more spread out.
+
+---
+
+# Supplement/Appendix 1 - ODD Protocol
 
 ---
 
