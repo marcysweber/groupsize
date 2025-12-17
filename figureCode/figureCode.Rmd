@@ -1,8 +1,9 @@
 ---
 title: "Figures for Ekanayake-Weber et al. 2026"
 output:
-  word_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 date: "2025-12-12"
 ---
  
@@ -24,6 +25,7 @@ library(ggpubr)
 library(dplyr)
 library(grid)
 library(knitr)
+library(tiff)
 
 #library(tidyverse)
 
@@ -67,7 +69,7 @@ heatmaptheme <-
     legend.title = element_text(size = 10),
     panel.grid = element_line(color = "black"),
     panel.grid.major = element_line(color = "gray75"),
-    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"),)
+    panel.grid.minor = element_line(color = "gray90"), panel.background = element_rect(fill = "white", color = "gray50"))
 
 
 
@@ -95,7 +97,15 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ---
 
-```{r figure3, echo = FALSE, , fig.width=6, fig.height=5}
+![**Figure 1.** Illustration of the two major categories of food resource characteristics, availability (left) and distribution (right). For demonstration of each parameterized characteristic, all other resource parameters are held constant. For example, when increasing patch quality (lower right), the same amount of calories are available on the landscape, but concentrated in fewer resource patches. Rather than controlling resources directly, energy per capita (EpC, lower left) determines the size of the agent population relative to the amount of calories on the landscape.](images/Figure1.png)
+
+---
+
+![**Figure 2.** How the gregariousness rules worked in the model using the two parameters, target distance and target neighbors. Sensory range covers the entire square for all scenarios. Green and yellow squares are resource patches of high and low energy contents, respectively; black squares are empty patches. The red star is the perspective agent; the white arrowheads are the non-perspective agents. The white dashed line indicates the area with target distance of the perspective agent. The red arrow represents the new heading of the perspective agent. Agents would orient themselves towards the best visible resource patch unless they did not have enough other agents within target distance of themselves. In the left column (A, C), target distance is 6. In the right column (B, D), target distance is 12. In the upper row (A, B), target neighbors is 2. In the lower row (C, D), target neighbors is 5. In A, B, and D, the perspective agent has satisfied gregariousness rules, and will orient towards the highest-energy resource patch. In C, the gregariousness rules are not satisfied, so the perspective agent will orient towards any visible agents farther away than target distance.](images/Figure2.png)
+
+---
+
+```{r figure3, echo = FALSE, fig.width=6, fig.height=5}
 
 print(paste("Mean group size: ", mean(resultsGS$`mean-group-size`)))
 print(paste("Median group size: ", median(resultsGS$`mean-group-size`)))
@@ -411,6 +421,56 @@ multiplot(a, c, b, d, cols = 2)
 ---
 
 # Supplement/Appendix 1 - ODD Protocol
+
+**Table 1.1.** Agent attribute variables in the agent-based model.
+
+| Variable name	| Description |	states/data structure |
+| ----------- | ----------- | ----------- | 
+| stored-energy	| The amount of energy (in relative units) that the agent has accumulated; all agents start at 30	| Real number (float) |
+| rhp	| The competitive ability of the agent, assigned randomly at birth/initialization.|	Integers 1-8 |
+| nearest-primates |	Primates within visual range (“other-primate-detection-radius”); if more than “tgt-neighbor”, limited to that number of primates |	Turtle-set of primates |
+| visible-resources	| Resources tiles currently containing energy within the visual range (resource-detection-radius)	| Patch-set |
+| exp-score |	current value of estimated fighting ability based on previous recorded fight outcomes |	Float between 0.0 and 1.0 |
+| exp-delta-list |	List recording every time the exp-score was changed by a win or loss |	List of floats |
+| xcor, ycor |	Coordinates describing the current location of the agent |	Float, float; range, -140 to 140 |
+| heading	| The current direction that the agent is pointing; 0 is north, 90 is east, etc. |	Degrees out of 360 (clockwise) |
+
+
+**Table 1.2.** Patch attributes in the agent-based model. 
+
+Variable name	| Description |	states/data structure |
+| ----------- | ----------- | ----------- | 
+| pxcor, pycor |	Coordinates describing the location of the patch | Integer, integer; range, -140 to 140 |
+| penergy | The current energetic contents of the patch |	Integer; range depends on parameter values |
+| quality	| The maximum energetic contents of the patch, up to which it regrows |	Integer; range depends on parameter values |
+| extraction-rate |	How much energy can be extracted from this patch per tick |	Float; range depends on parameter values |
+
+
+**Table 1.3.** Landscape parameters.
+
+| Parameter  | Variable Name in NetLogo | Description | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
+| ----------- | ----------- | ----------- | ----------- | ----------- | 
+| Clump size | clump-size | The mean of the normal distribution which determines the number of patches in a clump | 1-500 | 1, 63, 126, 251, 376, 501 | 250 |
+| Abundance | abundance | Total amount of energy units to be distributed across the landscape | 200,000 - 1,200,000 | 200,000 to 1,200,000 in steps of 225,000 | 600,000 |
+| Energy per capita | energy-per-capita | Energy units distributed for each primate agent created. Population size calculated by dividing abundance by/ energy-per-capita. | 4,000 - 9,000	| 4,000 to 9,000 in steps of 1250	| 6,500 |
+| Patch regrowth interval | patch-regrowth-interval	| The interval at which patches have the ability to regrow; longer intervals mean less frequent regrowth/more variability over time in resource availability | 500 - 2500 |	1000 |	1000 |
+| Extraction rate mean | extraction-rate-mean | The mean of a normal distribution which determines how much energy a primate can extract from a particular patch in single time-step (i.e., determines depletion speed of patch) |	2 - 8	| 5	| 5 |
+| Extraction rate standard deviation | extraction-rate-sd | The standard deviation of a normal distribution which determines how much energy a primate can extract from a particular patch in a single time-step | 	1 to 5 energy units per time-step | 1 | 1 |
+| Patch quality mean | qual-mean | The mean of a normal distribution which determines energy in patch | Integer between 25 and 150 | 130 | 130 |
+| Patch quality standard deviation | qual-sd | The standard deviation of a normal distribution which determines patch qualities | Integer between 1 and 20 | 5 | 5 |
+| Regrowth rate | regrowth-rate | The amount of energy gained by each patch in the landscape at a certain frequency | 0.5-1 | 1 | 1 |
+
+
+**Table 1.4.** Behavioral and sensory parameters of the primate agents.
+
+| Parameter  | Variable Name in NetLogo | Description | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
+| ----------- | ----------- | ----------- | ----------- | ----------- | 
+| Target distance | tgt-dist | The target radius that each primate must maintain a targeted number of primate neighbors within |	1 - 40 |	1, 11, 21, 31, 41 |	1 to 41 in steps of 4 |
+| Target neighbors | tgt-neighbors | The number of neighbors that each primate must have within the target distance |	3 - 11 |	3, 5, 7, 9, 11 |	3 - 11 |
+| Other primate detection radius | other-primate-detection-radius | The radius within which a primate can detect other neighboring primates | 70-100 | 70 | 70 |
+| Resource detection radius | resource-detection-radius | The radius within which a primate can detect all patches with energy units greater than 0 | 50-100 | 50 | 50 |
+| Movement noise | movement-noise | A number that is used to add randomness to a primate’s heading when wandering, traveling or dispersing; this is done by subtracting a half of movement-noise from a random number selected from 0 to movement-noise and adding to the primate’s heading | 10-45 | 10 | 10 |
+| Maximum movement | max-move | The maximum distance that a primate agent can travel in a single time step.  | 10-30 | 10 | 10 |
 
 ---
 
@@ -1333,7 +1393,9 @@ This supplement/appendix contains the within-population group-level results.
  
 ```{r figure3.1, echo=FALSE, fig.width=5, fig.height=10}
 
-my_theme = theme_bw(base_size = 10)
+my_theme = theme_bw(base_size = 10) + theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10))
+
+panel.background = element_rect(fill = "white", color = "gray50")
 
 groupLevelDF <- bind_rows(group.level, .id = "column_label")
 groupLevelDF$clump <- as.factor(groupLevelDF$clump)
@@ -1375,7 +1437,7 @@ a <- ggplot(summaryslopedf, aes(x = intakeslope)) +
   labs(title = "a.", x = "Slopes, intake ~ group size",
        y = "Freq") +
     xlim(-100,50)+
-  theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10))+
+  my_theme+
   geom_vline(xintercept = 0, color = "red")
 
 
@@ -1387,7 +1449,7 @@ b <- ggplot(summaryslopedf, aes(x = travelslope)) +
     x = "Slopes, distance traveled ~ group size",
        y = "Freq") +
     xlim(-50,150)+
-  theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10))+
+  my_theme+
   geom_vline(xintercept = 0, color = "red")
 
 multiplot(a, b, cols = 1)
