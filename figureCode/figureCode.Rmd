@@ -1,9 +1,9 @@
 ---
 title: "Figures for Ekanayake-Weber et al. 2026"
 output:
-  html_document: default
-  pdf_document: default
   word_document: default
+  pdf_document: default
+  html_document: default
 date: "2025-12-12"
 ---
  
@@ -416,7 +416,7 @@ multiplot(a, c, b, d, cols = 2)
 
 ```
 
-**Figure 6.** The relationship between group size and foraging efficiency, mediated by the maximum distance that agents would tolerate being from group members (“target distance”). The number of group members that each agent attempted to keep in proximity (“target neighbors”) was also allowed to vary across these simulations. Each dot represents a population mean of a single simulation. The black lines are linear regressions for each category of target distance. Formulae for the regression lines (using the log group size) are displayed on each plot. **A.** when target distance was less than 20, which meant that agents maintained closer proximity to other group members. **B.** when target distance was greater than 20, which meant that group members tolerated being more spread out.
+**Figure 6.** The relationship between group size and foraging success, mediated by the maximum distance that agents would tolerate being from group members (“target distance”). **A. and B.,** the effect on mean energy intake rate; **C. and D.,** the effect on daily distance traveled. The number of group members that each agent attempted to keep in proximity (“target neighbors”) was also allowed to vary across these simulations. Each dot represents a population mean of a single simulation. The black lines are linear regressions for each category of target distance. Formulae for the regression lines (using the log group size) are displayed in the lower right on each plot. **A. and C.,** when target distance was less than 20, which meant that agents maintained closer proximity to other group members. **B. and D.,** when target distance was greater than 20, which meant that group members tolerated being more spread out. 
 
 ---
 
@@ -446,10 +446,22 @@ Variable name	| Description |	states/data structure |
 | extraction-rate |	How much energy can be extracted from this patch per tick |	Float; range depends on parameter values |
 
 
-**Table 1.3.** Landscape parameters.
+**Table 1.3.** Behavioral and sensory parameters of the primate agents.
 
 | Parameter  | Variable Name in NetLogo | Description | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
-| ----------- | ----------- | ----------- | ----------- | ----------- | 
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | 
+| Target distance | tgt-dist | The target radius that each primate must maintain a targeted number of primate neighbors within |	1 - 40 |	1, 11, 21, 31, 41 |	1 to 41 in steps of 4 |
+| Target neighbors | tgt-neighbors | The number of neighbors that each primate must have within the target distance |	3 - 11 |	3, 5, 7, 9, 11 |	3 - 11 |
+| Other primate detection radius | other-primate-detection-radius | The radius within which a primate can detect other neighboring primates | 70-100 | 70 | 70 |
+| Resource detection radius | resource-detection-radius | The radius within which a primate can detect all patches with energy units greater than 0 | 50-100 | 50 | 50 |
+| Movement noise | movement-noise | A number that is used to add randomness to a primate’s heading when wandering, traveling or dispersing; this is done by subtracting a half of movement-noise from a random number selected from 0 to movement-noise and adding to the primate’s heading | 10-45 | 10 | 10 |
+| Maximum movement | max-move | The maximum distance that a primate agent can travel in a single time step.  | 10-30 | 10 | 10 |
+
+
+**Table 1.4.** Landscape parameters.
+
+| Parameter  | Variable Name in NetLogo | Description | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | 
 | Clump size | clump-size | The mean of the normal distribution which determines the number of patches in a clump | 1-500 | 1, 63, 126, 251, 376, 501 | 250 |
 | Abundance | abundance | Total amount of energy units to be distributed across the landscape | 200,000 - 1,200,000 | 200,000 to 1,200,000 in steps of 225,000 | 600,000 |
 | Energy per capita | energy-per-capita | Energy units distributed for each primate agent created. Population size calculated by dividing abundance by/ energy-per-capita. | 4,000 - 9,000	| 4,000 to 9,000 in steps of 1250	| 6,500 |
@@ -461,23 +473,13 @@ Variable name	| Description |	states/data structure |
 | Regrowth rate | regrowth-rate | The amount of energy gained by each patch in the landscape at a certain frequency | 0.5-1 | 1 | 1 |
 
 
-**Table 1.4.** Behavioral and sensory parameters of the primate agents.
-
-| Parameter  | Variable Name in NetLogo | Description | Range for Global Sensitivity Analysis | Setting(s) for experiment to address H2 | Setting(s) for experiment to address H3 |
-| ----------- | ----------- | ----------- | ----------- | ----------- | 
-| Target distance | tgt-dist | The target radius that each primate must maintain a targeted number of primate neighbors within |	1 - 40 |	1, 11, 21, 31, 41 |	1 to 41 in steps of 4 |
-| Target neighbors | tgt-neighbors | The number of neighbors that each primate must have within the target distance |	3 - 11 |	3, 5, 7, 9, 11 |	3 - 11 |
-| Other primate detection radius | other-primate-detection-radius | The radius within which a primate can detect other neighboring primates | 70-100 | 70 | 70 |
-| Resource detection radius | resource-detection-radius | The radius within which a primate can detect all patches with energy units greater than 0 | 50-100 | 50 | 50 |
-| Movement noise | movement-noise | A number that is used to add randomness to a primate’s heading when wandering, traveling or dispersing; this is done by subtracting a half of movement-noise from a random number selected from 0 to movement-noise and adding to the primate’s heading | 10-45 | 10 | 10 |
-| Maximum movement | max-move | The maximum distance that a primate agent can travel in a single time step.  | 10-30 | 10 | 10 |
 
 ---
 
 # Supplement/Appendix 2
 This supplement/appendix contains extra results to support the main text.
 
-```{r figure2.2, echo=FALSE, fig.width=6, fig.height=3}
+```{r figure2.1, echo=FALSE, fig.width=6, fig.height=3}
 a<- ggplot(VidalCardaso, aes(x = `DMD (km/day)`)) +
   geom_histogram(aes(y=..count../sum(..count..))) +
   xlim(0, 10) +
@@ -527,11 +529,11 @@ multiplot(a, b, cols = 2)
 
 ```
 
-**Figure 2.2.** Pattern-matching: comparison of empirical daily movement distance data to simulated daily distance travel data. At a scale of each patch = 10m, the mean daily movement distance of our agents was similar to the range observed across a variety of primate species. Data was taken from Vidal-Cordasco et al. 2020.
+**Figure 2.1.** Pattern-matching: comparison of empirical daily movement distance data to simulated daily distance travel data. At a scale of each patch = 10m, the mean daily movement distance of our agents was similar to the range observed across a variety of primate species. Data was taken from Vidal-Cordasco et al. 2020.
 
 ---
 
-```{r figure2.3, echo=FALSE, fig.width=6, fig.height=3}
+```{r figure2.2, echo=FALSE, fig.width=6, fig.height=3}
 
 trimmedKamilarCooper <- KamilarCooperactivitybudgetdata[complete.cases(KamilarCooperactivitybudgetdata[,37:38]),]
 trimmedKamilarCooper$`move/move + feed` <- as.numeric(trimmedKamilarCooper$`move/move + feed`)
@@ -584,11 +586,11 @@ multiplot(a, b, cols = 2)
 
 ```
 
-**Figure 2.3.** To assess whether our agent’s activity budgets were similar to real primates, we converted activity budget data for a variety of species into a ratio of time moving to time moving or eating. Data was taken from Kamilar & Cooper 2013. Once adjusted, the range and distribution of this simplified activity budget approximated the behavior of agents in this model.
+**Figure 2.2.** To assess whether our agent’s activity budgets were similar to real primates, we converted activity budget data for a variety of species into a ratio of time moving to time moving or eating. Data was taken from Kamilar & Cooper 2013. Once adjusted, the range and distribution of this simplified activity budget approximated the behavior of agents in this model.
 
 ---
 
-```{r figure2.4, echo=FALSE, fig.width=3.3, fig.height=2}
+```{r figure2.3, echo=FALSE, fig.width=3.3, fig.height=2}
 
 ggplot(resultsGS, aes(`percent-grouped`)) +
   geom_histogram(binwidth = 0.1, aes(y=..count../sum(..count..)), fill="grey25", col="white")+
@@ -607,11 +609,11 @@ ggplot(resultsGS, aes(`percent-grouped`)) +
 
 ```
 
-**Figure 2.4.** In simulations run with the parameter ranges listed in Appendix Table 2.1, we recorded the proportion of agents labeled as grouped in the population. With a target-neighbors of >=3, the vast majority of agents belonged to groups.
+**Figure 2.3.** In simulations run with the parameter ranges listed in Appendix Table 2.1, we recorded the proportion of agents labeled as grouped in the population. With a target-neighbors of >=3, the vast majority of agents belonged to groups.
 
 ---
 
-```{r figure2.5, echo=FALSE, fig.width=10, fig.height=10}
+```{r figure2.4, echo=FALSE, fig.width=10, fig.height=10}
 
 analysisGSscatter <- data.frame()
 for (df in analysisGS) {
@@ -747,11 +749,11 @@ multiplot(a, b, c, d, cols=2)
 
 ```
 
-**Figure 2.5.** Elementary effects for the four main metrics: population mean group size (A), energy intake rate (B), total distance traveled (C), and inter-individual distance among group members (D). The most influential parameters for each metric have text labels. Other data points are labeled as follows: 1 - abundance; 2, clump size; 3, energy per capita; 4, extraction rate (mean); 5, extraction rate (SD); 6, movement speed; 7, movement noise; 8,  sensory range, other primates; 9, patch regrowth interval; 10, mean patch quality; 11, SD patch quality; 12, % regrowth; 13, sensory range, resources; 14, target distance; 15,  target neighbors.
+**Figure 2.4.** Elementary effects for the four main metrics: population mean group size (A), energy intake rate (B), total distance traveled (C), and inter-individual distance among group members (D). The most influential parameters for each metric have text labels. Other data points are labeled as follows: 1 - abundance; 2, clump size; 3, energy per capita; 4, extraction rate (mean); 5, extraction rate (SD); 6, movement speed; 7, movement noise; 8,  sensory range, other primates; 9, patch regrowth interval; 10, mean patch quality; 11, SD patch quality; 12, % regrowth; 13, sensory range, resources; 14, target distance; 15,  target neighbors.
 
 ---
 
-```{r figure2.6, echo=FALSE, fig.width=7, fig.height=12}
+```{r figure2.5, echo=FALSE, fig.width=7, fig.height=12}
 clump_maxmove <- pop.level[[1]]
 
 #2
@@ -866,11 +868,11 @@ multiplot(a, b, c, d, e, f, g, cols = 2)
 
 ```
 
-**Figure 2.6.** Heatmaps with the interactive effects of the most influential parameters on population mean group size. Based on the strongest elementary effects (appendix figure 2.5 A), factorial experiments were designed to clarify the strongest interactions for population mean group size. Log10 of group size was used, since this outcome was non-normally distributed. Each tile of the heatmap represents only a single simulation.
+**Figure 2.5.** Heatmaps with the interactive effects of the most influential parameters on population mean group size. Based on the strongest elementary effects (appendix figure 2.5 A), factorial experiments were designed to clarify the strongest interactions for population mean group size. Log10 of group size was used, since this outcome was non-normally distributed. Each tile of the heatmap represents only a single simulation.
 
 ---
 
-```{r figure2.7, echo=FALSE, fig.width=7, fig.height=8}
+```{r figure2.6, echo=FALSE, fig.width=7, fig.height=8}
 heatmaptheme <-  theme(
   axis.title = element_text(size = 10, color = "black"),
   axis.text = element_text(size = 8, color = "black"),
@@ -931,11 +933,11 @@ multiplot(a, b, d, c, d, e, cols = 2)
 
 ```
 
-**Figure 2.7.** Heatmaps with the interactive effects of the most influential parameters on energy intake rate. Based on the strongest elementary effects (appendix figure 2.5 B), factorial experiments were designed to clarify the strongest interactions for energy intake rate. Note the close linkage between extraction rate and energy intake rate (a and b); this is as expected, this extraction rate puts an upper limit on how quickly agents can gain energy out of a patch, even if no feeding competition is occurring.
+**Figure 2.6.** Heatmaps with the interactive effects of the most influential parameters on energy intake rate. Based on the strongest elementary effects (appendix figure 2.5 B), factorial experiments were designed to clarify the strongest interactions for energy intake rate. Note the close linkage between extraction rate and energy intake rate (a and b); this is as expected, this extraction rate puts an upper limit on how quickly agents can gain energy out of a patch, even if no feeding competition is occurring.
 
 ---
 
-```{r figure2.8, echo=FALSE, fig.width=7, fig.height=11}
+```{r figure2.7, echo=FALSE, fig.width=7, fig.height=11}
 
 heatmaptheme <-  theme(
   axis.title = element_text(size = 10, color = "black"),
@@ -1016,11 +1018,11 @@ multiplot(a, b, c, d, e, f, g, cols = 2)
 
 ```
 
-**Figure 2.8.** Heatmaps with the interactive effects of the most influential parameters on daily distance traveled. Based on the strongest elementary effects (appendix figure 2.5 C), factorial experiments were designed to clarify the strongest interactions for daily distance traveled.
+**Figure 2.7.** Heatmaps with the interactive effects of the most influential parameters on daily distance traveled. Based on the strongest elementary effects (appendix figure 2.5 C), factorial experiments were designed to clarify the strongest interactions for daily distance traveled.
 
 ---
 
-```{r figure2.9, echo=FALSE, fig.width=7, fig.height=12}
+```{r figure2.8, echo=FALSE, fig.width=7, fig.height=12}
 
 bigexp_smallclump <- p1.2data[p1.2data$clump.size==1,]
 bigexp_medsmallclump <- p1.2data[p1.2data$clump.size==126,]
@@ -1125,11 +1127,11 @@ multiplot(a, b, c, d, e, f, g, cols = 2)
 
 ```
 
-**Figure 2.9.** Energy intake rate as a product of mean group size, for all clump sizes (A) and for clumps of different sizes (B-G). Data is the same as main text figure 4, just with more different clump sizes. 
+**Figure 2.8.** Energy intake rate as a product of mean group size, for all clump sizes (A) and for clumps of different sizes (B-G). Data is the same as main text figure 4, just with more different clump sizes. 
 
 ---
 
-```{r figure2.10, echo=FALSE, fig.width=7, fig.height=12}
+```{r figure2.9, echo=FALSE, fig.width=7, fig.height=12}
 
 #Daily distance traveled as a product of mean group size, for all clump sizes (A) and for clumps of different sizes (B-G).
 lineq <-   stat_regline_equation(label.y = log10(60), label.x = log10(6), aes(label = after_stat(eq.label)))  
@@ -1226,11 +1228,11 @@ multiplot(a0, a, aa, b, c, d, e, cols = 2)
 
 ```
 
-**Figure 2.10.** Daily distance traveled as a product of mean group size, for all clump sizes (A) and for clumps of different sizes (B-G). Data is the same as main text figure 5, just with more different clump sizes. 
+**Figure 2.9.** Daily distance traveled as a product of mean group size, for all clump sizes (A) and for clumps of different sizes (B-G). Data is the same as main text figure 5, just with more different clump sizes. 
 
 ---
 
-```{r figure2.11, echo=FALSE, fig.width=7, fig.height=10}
+```{r figure2.10, echo=FALSE, fig.width=7, fig.height=10}
 
 a <- ggplot(tgtneighbor_tgtdist, aes(x = tgt.neighbor, y = tgt.dist, fill = mean.inter.indiv.dist)) +
   geom_tile()+
@@ -1384,7 +1386,7 @@ multiplot(a, b, c, d, e, f, g, h, cols = 2)
 
 ```
 
-**Figure 2.11.** Heatmaps with the interactive effects of the most influential parameters on interindividual distance. Based on the strongest elementary effects (appendix figure 2.5 D), factorial experiments were designed to clarify the strongest interactions for interindividual distance.
+**Figure 2.10.** Heatmaps with the interactive effects of the most influential parameters on interindividual distance. Based on the strongest elementary effects (appendix figure 2.5 D), factorial experiments were designed to clarify the strongest interactions for interindividual distance.
 
 ---
 
