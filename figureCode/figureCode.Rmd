@@ -1604,16 +1604,16 @@ multiplot(a, b, c, d, cols = 4)
 ```
 
 
-```{r pptFigure3, echo=FALSE, fig.width=5, fig.height=2}
-ggplot(summaryslopedf, aes(x = travelslope)) +
+```{r pptFigure3, echo=FALSE, fig.width=10, fig.height=4}
+ggplot(summaryslopedf, aes(x = intakeslope)) +
      geom_histogram() +  # or geom_line() depending on what you want
      facet_grid(~clump, 
                 labeller = label_both) +  # Shows "abundance: 10" style labels
      labs(
-          x = "Slopes, distance traveled ~ group size",
+          x = "Slopes, energy intake ~ group size",
           y = "# of populations") +
-     xlim(-50,150)+
-     theme(axis.text=element_text(size = 8), strip.text = element_text(size=8), axis.title = element_text(size =10),panel.grid = element_line(color = "black"),
+     xlim(-50,50)+
+     theme(axis.text=element_text(size = 14), strip.text = element_text(size=18), axis.title = element_text(size =18),panel.grid = element_line(color = "black"),
            panel.grid.major = element_line(color = "gray90"),
            panel.grid.minor = element_line(color = "gray95"), panel.background = element_rect(fill = "white", color = "gray50"),)+
      geom_vline(xintercept = 0, color = "red")
