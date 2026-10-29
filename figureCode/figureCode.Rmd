@@ -414,6 +414,78 @@ multiplot(a, c, b, d, cols = 2)
 
 # Supplement/Appendix 2
 This supplement/appendix contains extra results to support the main text.
+```{r figure2.1, echo=FALSE, fig.width=6, fig.height=5}
+clump_maxmove <- pop.level[[1]]
+
+#2
+clump_abundance<- pop.level[[2]]
+
+#3
+clump_energypercap<- pop.level[[3]]
+
+#4
+energypercap_abundance<- pop.level[[4]]
+
+#5
+qualmean_clump<- pop.level[[5]]
+
+#6
+qualmean_maxmove<- pop.level[[6]]
+
+#7
+regrowth_clump<- pop.level[[7]]
+
+#8
+regrowth_qualmean<- pop.level[[8]]
+
+#9
+regrowth_maxmove<- pop.level[[9]]
+
+#10
+tgtneighbor_abundance<- pop.level[[10]]
+
+#11
+tgtneighbor_clump<- pop.level[[11]]
+
+#12
+tgtneighbor_energypercap<- pop.level[[12]]
+
+#13
+tgtneighbor_tgtdist<- pop.level[[13]]
+
+
+a <- ggplot(energypercap_abundance[energypercap_abundance$abundance == 400000,], aes(x = energy.per.capita, y = foraging.efficiency.time)) +
+    geom_point()+
+    labs(title = "a.") +
+    xlab("energy per capita")+
+    ylab("mean individual \nenergy intake rate")
+b <- ggplot(extraction_regrowth, aes(x = extraction.rate.mean, y = patch.regrowth.interval, fill = foraging.efficiency.time)) +
+  geom_tile()+
+  scale_fill_distiller(palette = "YlGn", direction = 1) +
+  labs(title = "b.", fill = "energy \nintake \nrate") +
+  xlab("extraction rate")+
+  ylab("regrowth interval") +  
+  heatmaptheme
+
+c <- ggplot(energypercap_abundance[energypercap_abundance$abundance == 400000,], aes(x = energy.per.capita, y = mean.distance.traveled)) +
+    geom_point()+
+    
+    labs(title = "c.") +
+    xlab("energy per capita")+
+    ylab("mean individual \ndistance traveled") 
+
+d <- ggplot(tgtneighbor_tgtdist[tgtneighbor_tgtdist$tgt.dist == 5,], aes(x = tgt.neighbor, y = mean.group.size)) +
+  geom_point()+
+ 
+  labs(title = "d.") +
+  xlab("target neighbors")+
+  ylab("group size") 
+
+
+
+multiplot(a, c, b, d, cols = 2)
+```
+
 
 ```{r figure2.2, echo=FALSE, fig.width=6, fig.height=3}
 a<- ggplot(VidalCardaso, aes(x = `DMD (km/day)`)) +
@@ -463,9 +535,15 @@ multiplot(a, b, cols = 2)
 
 
 
+
+
 ```
 
 **Figure 2.2.** Pattern-matching: comparison of empirical daily movement distance data to simulated daily distance travel data. At a scale of each patch = 10m, the mean daily movement distance of our agents was similar to the range observed across a variety of primate species. Data was taken from Vidal-Cordasco et al. 2020.
+
+
+
+
 
 ---
 
@@ -690,43 +768,7 @@ multiplot(a, b, c, d, cols=2)
 ---
 
 ```{r figure2.6, echo=FALSE, fig.width=7, fig.height=12}
-clump_maxmove <- pop.level[[1]]
 
-#2
-clump_abundance<- pop.level[[2]]
-
-#3
-clump_energypercap<- pop.level[[3]]
-
-#4
-energypercap_abundance<- pop.level[[4]]
-
-#5
-qualmean_clump<- pop.level[[5]]
-
-#6
-qualmean_maxmove<- pop.level[[6]]
-
-#7
-regrowth_clump<- pop.level[[7]]
-
-#8
-regrowth_qualmean<- pop.level[[8]]
-
-#9
-regrowth_maxmove<- pop.level[[9]]
-
-#10
-tgtneighbor_abundance<- pop.level[[10]]
-
-#11
-tgtneighbor_clump<- pop.level[[11]]
-
-#12
-tgtneighbor_energypercap<- pop.level[[12]]
-
-#13
-tgtneighbor_tgtdist<- pop.level[[13]]
 #####
 #Heatmaps with the interactive effects of the most influential parameters on population mean group size
 #####
